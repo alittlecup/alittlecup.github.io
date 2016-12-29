@@ -193,6 +193,7 @@
 
                 <blockquote>
 <p>之前使用的是Gradle中定义productFlavors进行多渠道打包，其实在最开始接触的时候就知道有极速打包这个方案，只不过当时项目中有Tinker,抓紧上线就没使用，趁工作间隙研究研究发现，这根本就是两种方案，而且真的是很快，并且Tinker也不用那么麻烦。</p>
+</blockquote>
 <h1 id="packer-ng-plugin"><a href="#packer-ng-plugin" class="headerlink" title="packer-ng-plugin"></a>packer-ng-plugin</h1><p>目前所了解的最快的打包方案，并且Tinker也鼓励使用这种方式，github主页上介绍100个渠道包只用10秒，github地址<a href="https://github.com/mcxiaoke/packer-ng-plugin" target="_blank" rel="external">在这里</a>，官方的接入说明已经很详细了，这里就不过多说一些都知道的东西，说一些我在接入过程中遇到的小问题。  </p>
 <ol>
 <li><strong>markets.txt的位置</strong>：如果是放在Project根目录下，就是和setting.gradle平级的话，那么对应的就是<code>java -Pmarket=markets.txt</code> ,如果是在Module的目录下，就是和Module的build.gradle平级的话，那么对应的就是<code>java -Pmarket={module名}/markets.txt</code> 。  </li>
@@ -203,7 +204,6 @@
 <li>亲测，速度确实快好多。</li>
 <li>为什么，比如同样有100个渠道，之前的那种方式，会重复打100个包，编译期改变Manifest中的渠道信息，之后重新打包。现在的方式是将markets.txt中的文件写到zip文件中，相当于打一个包，复制一下，改其中一个文件，重复一百次，本质上是打一个包，而之前的是打100个包，这就是问什么会快的原因。</li>
 </ol>
-</blockquote>
 
 
                 <hr>
