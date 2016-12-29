@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Cordova自定义插件实战 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2016/12/12/Cordova自定义插件实战/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>Cordova自定义插件实战</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by one_cup on
+                        2016-12-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>#Cordova自定义插件实战#</p>
+<h2 id="使用前提"><a href="#使用前提" class="headerlink" title="使用前提"></a>使用前提</h2><ol>
+<li>已经能够实现原有插件的使用。</li>
+<li>稍微熟悉JS语言（其实我也不会）</li>
+<li><p>创建一个Cordova的Demo。</p>
+<h2 id="自定义插件实战"><a href="#自定义插件实战" class="headerlink" title="自定义插件实战"></a>自定义插件实战</h2><p><strong>准备工具</strong></p>
+</li>
+<li><p>用Cordova在Dos中创建一个Demo，之后将此Demo在Eclipse中引入，会发现多了两个文件CordovaLib和MainActivity。</p>
+</li>
+<li>新建一个text的Android工程，将MainActivity中src目录下的org.apache.cordova包，assets目录下的www文件，和res目录下的XML文件夹拷到新建text工程的相应位置。</li>
+<li>将Cordova作为text外部依赖库。</li>
+</ol>
+<p><img src="http://i.imgur.com/HMqwKyv.png" alt=""></p>
+<h3 id="Toast"><a href="#Toast" class="headerlink" title="Toast"></a>Toast</h3><p>先写一个比较简单的插件，方便大家了解这个插件化的编写流程，只要把套路记住了，其他的都好弄。<br>先说一下在写插件的过程中我们需要经常接触的四个文件。</p>
+<ol>
+<li>插件的JAVA文件—位于src目录下–自己写</li>
+<li>插件的JS文件—位于assets/www/plugins目录下–自己写</li>
+<li>Cordova_plugins.js—位于assets目录下–插件的配置文件</li>
+<li>Config.xml—位于res/xml目录下–添加配置</li>
+</ol>
+<p>在自定义插件的过程中我们会经常接触的就是这四个文件，接下来就是套路了。</p>
+<p><strong>编写Java文件</strong>：在src目录下新建一个包，包名随便起，我的是com.pactera.plugin，之后在里面新建一个Toast类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">   <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Toast</span> <span class="keyword">extends</span> <span class="title">CordovaPlugin</span></span>&#123;</div><div class="line">CallbackContext mCallbackContext;</div><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">execute</span><span class="params">(String action, JSONArray args,</span></span></div><div class="line">		CallbackContext callbackContext) <span class="keyword">throws</span> JSONException &#123;</div><div class="line">	<span class="comment">// TODO Auto-generated method stub</span></div><div class="line">	<span class="keyword">if</span>(<span class="string">"showToast"</span>.equals(action))&#123;</div><div class="line">	showToast(args.getString(<span class="number">0</span>),args.getInt(<span class="number">1</span>));</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">showToast</span><span class="params">(String text, <span class="keyword">int</span> type)</span> </span>&#123;</div><div class="line">	android.widget.Toast.makeText(cordova.getActivity(), text, type).show();</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>首先继承CordovaPlugin这个类之后重写execute方法，三个参数，action为html中调用的方法名，args为方法参数，callbackContext为回调，先不用管那个多，首先对action进行判断，如果action所对应的方法名与我们定义的方法名相同的话就，就执行弹出一个Toast的动作，在if（）{}大括号中随便写，我只不过是为了方便就写的与方法名相同，其实不用。关于返回值true的时候表示此插件可用，false为不可用，个人目前没有感觉在实际中有什么应用。现在一个Toast插件的Java代码就写好了，唯一<strong>值得注意的就是if（）括号中的方法名</strong>。</p>
+<p><strong>编写JS文件</strong>：<br>在assets/www/plugins目录下新建一个文件夹，名字随意起，我的是cordova-plugin-toast，之后在文件夹内新建一个toast.js文件，代码。</p>
+<pre><code>cordova.define(&quot;cordova-plugin-toast.toast&quot;, function(require, exports, module) {
+var exec = require(&apos;cordova/exec&apos;);
+module.exports ={
+showToast:function (content,type) {
+     exec(null, null, &quot;Toasts&quot;, &quot;showToast&quot;, [content,type]);
+}
+};
+});
+</code></pre><p>这是一个最精简的一个JS文件，不过也囊括了一个插件的JS文件的必备要素。</p>
+<ol>
+<li>第一行，” cordova.define(“cordova-plugin-toast.toast”, function(require, exports, module) { “  这就是套路，不用想为什么这么写，因为我也不知道，值得注意的就是在<strong>cordova.define()括号中添加的是插件js文件的文件夹名和js文件名</strong>。</li>
+<li>第二行，第三行，抄过去进行，必须写。</li>
+<li>第四行，其中showToast为我们自己定义的在html调用的方法名。冒号后面的function的括号中定义在html中调用本地Toast中需要的参数，大括号中也是固定写法 <strong>exec括号中有五个参数，分别是：成功回调，失败回调，feature name，方法名，参数。</strong>，其中feature name可能不知道是什么无所谓，先放着，方法名就是showToast，参数就是function中的参数，同时也对应着java代码中JSONArray args。</li>
+</ol>
+<p><strong>配置cordova_plugins.js</strong></p>
+<p>在module.exports中添加</p>
+<pre><code>{
+    &quot;file&quot;: &quot;plugins/cordova-plugin-toast/toast.js&quot;,
+    &quot;id&quot;: &quot;cordova-plugin-toast.toast&quot;,
+    &quot;clobbers&quot;: [
+          &quot;navigator.webtoast&quot;
+    ]
+}
+</code></pre><p>把上面的复制粘贴一下，将file中的改为插件的JS文件路径，id改为插件的文件夹名和文件名，对应着JS文件中的Cordova.define括号中内容，clobbers中内容随便写，这个是html中调用方法时的调用头部（先这么叫着吧，因为我也没学过JS，不知道专业怎么叫），注意上下文的逗号。</p>
+<p>在module.exports.metadata中添加</p>
+<pre><code>&quot;cordova-plugin-toast&quot;:&quot;1.0.0&quot;
+</code></pre><p>“文件夹名” ：”版本号”，版本号随便写，目前不知道在未来有什么作用，文件夹名就是JS文件的文件夹名，这个cordova_plugins也配合完成。</p>
+<p><strong>配置config.xml</strong><br>在文件中适当的位置添加</p>
+<pre><code>  &lt;feature name=&quot;Toasts&quot;&gt;
+&lt;param name=&quot;android-package&quot; value=&quot;com.pactera.plugin.Toast&quot; /&gt;
+   &lt;/feature&gt;
+</code></pre><p><strong>直接把其中的一个复制粘贴，feature name随便写，不过要与JS文件中的第三个参数保持一致，param name统一写 android-package，value中则对应的是JAVA文件的包名和类名。</strong></p>
+<h3 id="套路"><a href="#套路" class="headerlink" title="套路"></a>套路</h3><p>整体的编写流程已经介绍一遍了，其中比较重要的地方都加粗标记了一下，不过这么看起来好像有点乱，而且也没有体现出来套路是什么。现在就把套路告诉大家，只要掌握这个基本的套路写一个简单的插件完全没有问题。</p>
+<ol>
+<li>JAVA文件：”方法名”.equals(action),做判断。args中存放html给你的参数。</li>
+<li>JS文件：define（”JS文件夹名.文件名”），方法名 ：function（参数）{exec（成功，失败，”feature name”，”方法名”，[参数]）}</li>
+<li>cordova_plugins.js:file:”js文件的路径”，id：”JS文件夹名.文件名”，clobbers：”方法调用头”，metadata中添加”JS文件夹名”：”版本号”。</li>
+<li>config.xml:feature name=”随便写”，与JS文件中保持一致，value为”JAVA包名.类名”</li>
+</ol>
+<p>在编写的过程中一共就这四条，只要这四条中所对应的内容都匹配的上，那么这个插件就没有问题。</p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>这运行之前还有两点需要做，<strong>首先</strong>在新建的Android的项目中把MainActivity中的内容进行一点的更改，将MainActivity继承自CordovaActivity，将onCreate修饰符改为public，去掉setContentview改为loadUrl(“file:///android_asset/www/index.html”);就是加载assets下index.xml文件，<strong>其次</strong>在index.xml文件中写一个button，onclick方法名随便写，之后写一个function方法。</p>
+<pre><code>function showToast(){
+           navigator.webtoast.showToast(&quot;测试Toast成功&quot;,0);
+        }
+</code></pre><p>第一个showToast为button的onclick所对应的方法名。大括号中的就是在cordova_plugins中定义的方法调用头和在JS中定义的方法名，参数也随便写，不过要注意就是也JAVA中的参数相对应。<br>看下效果。<br><img src="http://i.imgur.com/e1toSLh.gif" alt=""></p>
+<p>可以看到这就是一个简单的Toast插件效果，个人觉得按照套路把房子搭好，之后你愿意放什么就放什么。如果有不明白或者有有问题的可以留言。</p>
+<h3 id="Call-amp-SmS"><a href="#Call-amp-SmS" class="headerlink" title="Call&amp;SmS"></a>Call&amp;SmS</h3><p>接下来如果你的Toast插件已经编写完成了，并且对于整个套路有了一定的熟悉，肯定想验证一下自己学到的东西到底有没有真正的掌握，那么来做个测试吧，<strong>尝试编写插件来实现html调用本地的电话和短信</strong>，套路都是一样的主要差别就在JAVA代码中，这也是编写插件的最主要的地方，先看一下效果。</p>
+<p><img src="http://i.imgur.com/cbuhUnD.gif" alt=""><br>可以看出来效果还是可以的就是实现简单的调用而已。大家可以自行尝试一下，并不难。</p>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p>关于拓展我想写的有两点：</p>
+<ol>
+<li>关于html中接受回调，这个需要做的就是在Java代码中CallbackContext的两个方法，succsee和error，其中可以传递多种参数类型，之后要做的就是在JS代码中function方法的参数内添加两个参数，分别是成功和失败回掉调， exec中也要在相应的位置上写上相同名称的回调。最后在html中的方法内同样要写上成功和失败回调的function方法，注意参数的位置顺序。这个就自己尝试吧，不上代码了。</li>
+<li>关于onActivityResult的执行：通常会出现这样的情况，html中一个动作，通过插件开启另一个Activity之后需要回传数据，如果按照之前的startActivityForResult方法的话在插件的JAVA类中重写onActivityResult中是无法接受回调的，正确启动另一个Activity的姿势是<pre><code>cordova.startActivityForResult(command, intent, requestCode);
+</code></pre>第一个参数是关键就是当前的Plugin对象，这样onActivityResult才会收到回调。<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>之前一直在找工作，很久没有更新博客了，这篇博客算是新工作的第一个任务的阶段性总结吧，公司要求使用Cordova来实现很多的html交互，只能去学一些这方面的知识。新工作目前感觉还可以，接下来的半年应该都是自己充实的过程吧，感觉最近自己有点浮躁了，或者说安逸的生活不能激励我，鞭策我前进，找到工作就没有之前那么努力学习了，这是病得治，准备合理安排自己的工作时间和休息时间，坚持半年，保持良好的学习态度和高昂的学习热情，未来会更好的。</li>
+</ol>
+<blockquote>
+<p>本人水平有限，对于JS，html之类的东西不是很了解，这篇博客内容主要就是那四个套路方式，用好就可以其他的问我我也不会，如果按照我的套路在写插件的过程中出现什么问题可以留言，或者你有一个想要实现的插件效果，也可以留言，正好我也需要锻炼，共同进步！</p>
+</blockquote>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/12/26/Tinker流程介绍/" data-toggle="tooltip" data-placement="top" title="Tinker流程介绍">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/12/12/GOOGLEMVP/" data-toggle="tooltip" data-placement="top" title="GOOGLE TODO-MVP 学习笔记">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

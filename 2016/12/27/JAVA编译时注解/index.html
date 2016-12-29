@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          JAVA编译时注解 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2016/12/27/JAVA编译时注解/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/Tinker.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#运行时权限" title="运行时权限">运行时权限</a>
+                        
+                          <a class="tag" href="/tags/#注解" title="注解">注解</a>
+                        
+                    </div>
+                    <h1>JAVA编译时注解</h1>
+                    <h2 class="subheading"> &quot;你好，未来&quot;</h2>
+                    <span class="meta">
+                        Posted by one_cup on
+                        2016-12-27
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="JAVA编译时注解"><a href="#JAVA编译时注解" class="headerlink" title="JAVA编译时注解"></a>JAVA编译时注解</h1><blockquote>
+<p>最近看了几个6.0权限的库，发现一个黑科技，编译时注解，简单了解了一下之后发现，简直就是懒人专用的装逼神器啊，赶紧学一学。</p>
+</blockquote>
+<h2 id="自定义注解相关知识"><a href="#自定义注解相关知识" class="headerlink" title="自定义注解相关知识"></a>自定义注解相关知识</h2><p>定义注解的格式：<figure class="highlight java"><figcaption><span>public @interface 注解名&#123;定义体&#125;```  </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">常用的元注解：    </div><div class="line">**<span class="meta">@Retention</span>**    </div><div class="line"><span class="number">1</span>. RetentionPolicy.SOURCE 源码时注解，一般用来作为编译器标记。就比如Override, Deprecated, SuppressWarnings这样的注解。（这个我们一般都很少自定义的）  </div><div class="line"><span class="number">2</span>. RetentionPolicy.RUNTIME 运行时注解，一般在运行时通过反射去识别的注解。  </div><div class="line"><span class="number">3</span>. RetentionPolicy.CLASS 编译时注解，在编译时处理。  </div><div class="line">**<span class="meta">@Target</span>**   </div><div class="line"><span class="number">1</span>. ElementType.TYPE 接口、类、枚举、注解   </div><div class="line"><span class="number">2</span>. ElementType.FIELD 字段、枚举的常量  </div><div class="line"><span class="number">3</span>. ElementType.METHOD 方法  </div><div class="line"><span class="number">4</span>. ElementType.PARAMETER 方法参数  </div><div class="line"><span class="number">5</span>. ElementType.CONSTRUCTOR 构造函数  </div><div class="line"><span class="number">6</span>. ElementType.LOCAL_VARIABLE 局部变量  </div><div class="line"><span class="number">7</span>. ElementType.ANNOTATION_TYPE 注解  </div><div class="line"><span class="number">8</span>. ElementType.<span class="keyword">package</span> 包    </div><div class="line">还有其他的注解，平时不用，也不会就不介绍了。</div><div class="line"></div><div class="line">```java</div><div class="line">	<span class="meta">@Target</span>(ElementType.METHOD)</div><div class="line">	<span class="meta">@Retention</span>(RetentionPolicy.CLASS)</div><div class="line">	<span class="keyword">public</span> <span class="meta">@interface</span> ShowRequestPermissionRationale</div><div class="line">	&#123;</div><div class="line">    	<span class="function"><span class="keyword">int</span> <span class="title">value</span><span class="params">()</span></span>;</div><div class="line">	&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码来自鸿洋大神的MPermission,可以看到是一个编译时的方法注解，其中有一个参数。</p>
+<h2 id="注解处理器"><a href="#注解处理器" class="headerlink" title="注解处理器"></a>注解处理器</h2><p>当我们写好一个注解之后，怎么获取并处理这个注解所对应的数据呢？这就需要一个注解处理器AbstractProcessor，我们可以通过它来获取我们自定义的注解，并且获取数据，生成代码。常见方法：<br><strong>getSupportedAnnotationTypes()</strong>：<br>返回一个set集合，集合内容为自定义注解的包名+类名  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> Set&lt;String&gt; <span class="title">getSupportedAnnotationTypes</span><span class="params">()</span></span></div><div class="line">  &#123;</div><div class="line">      HashSet&lt;String&gt; supportTypes = <span class="keyword">new</span> LinkedHashSet&lt;&gt;();</div><div class="line">      supportTypes.add(PermissionDenied.class.getCanonicalName());</div><div class="line">      supportTypes.add(PermissionGrant.class.getCanonicalName());</div><div class="line">      supportTypes.add(ShowRequestPermissionRationale.class.getCanonicalName());</div><div class="line">      <span class="keyword">return</span> supportTypes;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>其中(PermissionDenied.class.getCanonicalName()是获取当前class的包名加类名。<br><strong>getSupportedSourceVersion()</strong>：返回支持的版本，这个统一返回latestSupported()；<br><strong>init(ProcessingEnvironment processingEnv)</strong>：初始化方法，可以通过processingEnv获取相关对象，对元素进行操作。<br><strong>process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</strong>： 参数 Set&lt;? extends TypeElement&gt; annotations ：将返回所有的由该Processor处理，并待处理的 Annotations。（属于该Processor处理的注解，但并未被使用，不存在与这个集合里）<br>参数 RoundEnvironment roundEnv ：表示当前或是之前的运行环境，可以通过该对象查找找到的注解。返回值 表示这组 annotations 是否被这个 Processor 接受，如果接受（true）后续子的 pocessor 不会再对这个 Annotations 进行处理。<br>相关对象：<br><strong>Messager</strong>:控制台输出<br><strong>Elements</strong>：获取元素的相关信息<br><strong>Filer</strong>:获取文件操作对象<br><strong>Element</strong>：表示一个程序元素，比如包、类或者方法。子类类型：  </p>
+<ol>
+<li>ExecutableElement：表示某个类或接口的方法、构造方法或初始化程序（静态或实例），包括注释类型元素。对应@Target(ElementType.METHOD)@Target(ElementType.CONSTRUCTOR)  </li>
+<li>PackageElement：表示一个包程序元素。提供对有关包极其成员的信息访问。对应@Target(ElementType.PACKAGE)  </li>
+<li>TypeElement：表示一个类或接口程序元素。提供对有关类型极其成员的信息访问。对应@Target(ElementType.TYPE)  </li>
+<li>TypeParameterElement：表示一般类、接口、方法或构造方法元素的类型参数。对应@Target(ElementType.PARAMETER)  </li>
+<li>VariableElement：表示一个字段、enum常量、方法或构造方法参数、局部变量或异常参数。对应@Target(ElementType.LOCAL_VARIABLE)<br>相应的Target可以进行强转。<br><strong>获取参数</strong>：根据不同的Element获取一些基本信息：包名，类名，方法名，参数类型，返回值。<br><strong>ExecutableElement</strong>：<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">	<span class="comment">//OnceClick.class 以 @Target(ElementType.METHOD)修饰</span></div><div class="line"><span class="keyword">for</span> (Element element : roundEnv.getElementsAnnotatedWith(OnceClick.class)) &#123;</div><div class="line">    <span class="comment">//对于Element直接强转</span></div><div class="line">    ExecutableElement executableElement = (ExecutableElement) element;</div><div class="line"></div><div class="line">    <span class="comment">//非对应的Element，通过getEnclosingElement转换获取</span></div><div class="line">    TypeElement classElement = (TypeElement) element</div><div class="line">                .getEnclosingElement();</div><div class="line"></div><div class="line">    <span class="comment">//当(ExecutableElement) element成立时，使用(PackageElement) element</span></div><div class="line">    <span class="comment">//            .getEnclosingElement();将报错。</span></div><div class="line">    <span class="comment">//需要使用elementUtils来获取</span></div><div class="line">    Elements elementUtils = processingEnv.getElementUtils();</div><div class="line">    PackageElement packageElement = elementUtils.getPackageOf(classElement);</div><div class="line"></div><div class="line">    <span class="comment">//全类名</span></div><div class="line">    String fullClassName = classElement.getQualifiedName().toString();</div><div class="line">    <span class="comment">//类名</span></div><div class="line">    String className = classElement.getSimpleName().toString();</div><div class="line">    <span class="comment">//包名</span></div><div class="line">    String packageName = packageElement.getQualifiedName().toString();</div><div class="line">    <span class="comment">//方法名</span></div><div class="line">    String methodName = executableElement.getSimpleName().toString();</div><div class="line"></div><div class="line">    <span class="comment">//取得方法参数列表</span></div><div class="line">    List&lt;? extends VariableElement&gt; methodParameters = executableElement.getParameters();</div><div class="line">    <span class="comment">//参数类型列表</span></div><div class="line">    List&lt;String&gt; types = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    <span class="keyword">for</span> (VariableElement variableElement : methodParameters) &#123;</div><div class="line">        TypeMirror methodParameterType = variableElement.asType();</div><div class="line">        <span class="keyword">if</span> (methodParameterType <span class="keyword">instanceof</span> TypeVariable) &#123;</div><div class="line">            TypeVariable typeVariable = (TypeVariable) methodParameterType;</div><div class="line">            methodParameterType = typeVariable.getUpperBound();</div><div class="line"></div><div class="line">        &#125;</div><div class="line">        <span class="comment">//参数名</span></div><div class="line">        String parameterName = variableElement.getSimpleName().toString();</div><div class="line">        <span class="comment">//参数类型</span></div><div class="line">        String parameteKind = methodParameterType.toString();</div><div class="line">        types.add(methodParameterType.toString());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>VariableElement</strong>:  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	<span class="keyword">for</span> (Element element : roundEnv.getElementsAnnotatedWith(IdProperty.class)) &#123;</div><div class="line">    <span class="comment">//ElementType.FIELD注解可以直接强转VariableElement</span></div><div class="line">    VariableElement variableElement = (VariableElement) element;</div><div class="line"></div><div class="line">    TypeElement classElement = (TypeElement) element</div><div class="line">            .getEnclosingElement();</div><div class="line">    PackageElement packageElement = elementUtils.getPackageOf(classElement);</div><div class="line">    <span class="comment">//类名</span></div><div class="line">    String className = classElement.getSimpleName().toString();</div><div class="line">    <span class="comment">//包名</span></div><div class="line">    String packageName = packageElement.getQualifiedName().toString();</div><div class="line">    <span class="comment">//类成员名</span></div><div class="line">    String variableName = variableElement.getSimpleName().toString();</div><div class="line"></div><div class="line">    <span class="comment">//类成员类型</span></div><div class="line">    TypeMirror typeMirror = variableElement.asType();</div><div class="line">    String type = typeMirror.toString();</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>TypeElement</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	<span class="keyword">for</span> (Element element : roundEnv.getElementsAnnotatedWith(xxx.class)) &#123;</div><div class="line">    <span class="comment">//ElementType.TYPE注解可以直接强转TypeElement</span></div><div class="line">    TypeElement classElement = (TypeElement) element;</div><div class="line"></div><div class="line">    PackageElement packageElement = (PackageElement) element</div><div class="line">                .getEnclosingElement();</div><div class="line"></div><div class="line">    <span class="comment">//全类名</span></div><div class="line">    String fullClassName = classElement.getQualifiedName().toString();</div><div class="line">    <span class="comment">//类名</span></div><div class="line">    String className = classElement.getSimpleName().toString();</div><div class="line">    <span class="comment">//包名</span></div><div class="line">    String packageName = packageElement.getQualifiedName().toString();</div><div class="line">     <span class="comment">//父类名</span></div><div class="line">     String superClassName = classElement.getSuperclass().toString();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>了解了这么多之后，来实战检验一下吧，还是一MPermission为例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">process</span><span class="params">(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv)</span></span></div><div class="line">  &#123;</div><div class="line">      <span class="comment">//清空集合</span></div><div class="line">      mProxyMap.clear();</div><div class="line">      <span class="comment">//打印处理器开始处理注解</span></div><div class="line">      messager.printMessage(Diagnostic.Kind.NOTE, <span class="string">"process..."</span>);</div><div class="line">      <span class="comment">//解析指定注解</span></div><div class="line">      <span class="keyword">if</span> (!processAnnotations(roundEnv, PermissionGrant.class)) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      <span class="keyword">if</span> (!processAnnotations(roundEnv, PermissionDenied.class)) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      <span class="keyword">if</span> (!processAnnotations(roundEnv, ShowRequestPermissionRationale.class)) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line"></div><div class="line">      <span class="comment">//遍历Map集合中key</span></div><div class="line">      <span class="keyword">for</span> (String key : mProxyMap.keySet())</div><div class="line">      &#123;   <span class="comment">//获得对应的Value对象</span></div><div class="line">          ProxyInfo proxyInfo = mProxyMap.get(key);</div><div class="line">          <span class="keyword">try</span></div><div class="line">          &#123;   <span class="comment">// 创建source文件 传入代理类名</span></div><div class="line">              JavaFileObject jfo = processingEnv.getFiler().createSourceFile(</div><div class="line">                      proxyInfo.getProxyClassFullName(),</div><div class="line">                      proxyInfo.getTypeElement());</div><div class="line">              <span class="comment">//获取一个流对象</span></div><div class="line">              Writer writer = jfo.openWriter();</div><div class="line">              <span class="comment">//写入内容</span></div><div class="line">              writer.write(proxyInfo.generateJavaCode());</div><div class="line">              writer.flush();</div><div class="line">              writer.close();</div><div class="line">          &#125; <span class="keyword">catch</span> (IOException e)</div><div class="line">          &#123;   <span class="comment">//打印失败信息</span></div><div class="line">              error(proxyInfo.getTypeElement(),</div><div class="line">                      <span class="string">"Unable to write injector for type %s: %s"</span>,</div><div class="line">                      proxyInfo.getTypeElement(), e.getMessage());</div><div class="line">          &#125;</div><div class="line"></div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">processAnnotations</span><span class="params">(RoundEnvironment roundEnv, Class&lt;? extends Annotation&gt; clazz)</span></span></div><div class="line">  &#123;   <span class="comment">//获得当前环境下所有的clazz注解</span></div><div class="line">      <span class="keyword">for</span> (Element annotatedElement : roundEnv.getElementsAnnotatedWith(clazz))</div><div class="line">      &#123;</div><div class="line">          <span class="comment">//检查注解是否可用，必须是方法注解，不是Private,不是Abstract</span></div><div class="line">          <span class="keyword">if</span> (!checkMethodValid(annotatedElement, clazz)) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">          <span class="comment">//强转成方法元素</span></div><div class="line">          ExecutableElement annotatedMethod = (ExecutableElement) annotatedElement;</div><div class="line">          <span class="comment">//获取类元素</span></div><div class="line">          TypeElement classElement = (TypeElement) annotatedMethod.getEnclosingElement();</div><div class="line">          <span class="comment">//获得全类名</span></div><div class="line">          String fqClassName = classElement.getQualifiedName().toString();</div><div class="line">          <span class="comment">//根据全类名获取对应的代理</span></div><div class="line">          ProxyInfo proxyInfo = mProxyMap.get(fqClassName);</div><div class="line">          <span class="keyword">if</span> (proxyInfo == <span class="keyword">null</span>)</div><div class="line">          &#123;   <span class="comment">//为空则创建新的代理，入参是元素Util和类元素</span></div><div class="line">              proxyInfo = <span class="keyword">new</span> ProxyInfo(elementUtils, classElement);</div><div class="line">              <span class="comment">//存入</span></div><div class="line">              mProxyMap.put(fqClassName, proxyInfo);</div><div class="line">              <span class="comment">//代理设置类元素</span></div><div class="line">              proxyInfo.setTypeElement(classElement);</div><div class="line">          &#125;</div><div class="line"></div><div class="line">          <span class="comment">//获得注解，比对，分发</span></div><div class="line">          Annotation annotation = annotatedMethod.getAnnotation(clazz);</div><div class="line">          <span class="keyword">if</span> (annotation <span class="keyword">instanceof</span> PermissionGrant)</div><div class="line">          &#123;</div><div class="line">              <span class="comment">//获得注解的Value值</span></div><div class="line">              <span class="keyword">int</span> requestCode = ((PermissionGrant) annotation).value();</div><div class="line">              <span class="comment">//将Value作为key，注解所标注的方法名作为value，写入对应的注解集合中</span></div><div class="line">              proxyInfo.grantMethodMap.put(requestCode, annotatedMethod.getSimpleName().toString());</div><div class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (annotation <span class="keyword">instanceof</span> PermissionDenied)</div><div class="line">          &#123;</div><div class="line">              <span class="keyword">int</span> requestCode = ((PermissionDenied) annotation).value();</div><div class="line">              proxyInfo.deniedMethodMap.put(requestCode, annotatedMethod.getSimpleName().toString());</div><div class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (annotation <span class="keyword">instanceof</span> ShowRequestPermissionRationale)</div><div class="line">          &#123;</div><div class="line">              <span class="keyword">int</span> requestCode = ((ShowRequestPermissionRationale) annotation).value();</div><div class="line">              proxyInfo.rationaleMethodMap.put(requestCode, annotatedMethod.getSimpleName().toString());</div><div class="line">          &#125; <span class="keyword">else</span></div><div class="line">          &#123;</div><div class="line">              error(annotatedElement, <span class="string">"%s not support ."</span>, clazz.getSimpleName());</div><div class="line">              <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">          &#125;</div><div class="line"></div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>代码里的注释写的很清楚了，不过多介绍，接下来看看proxyInfo.generateJavaCode()方法做了哪些事情</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">generateJavaCode</span><span class="params">()</span></span></div><div class="line">  &#123;</div><div class="line">      StringBuilder builder = <span class="keyword">new</span> StringBuilder();</div><div class="line">      builder.append(<span class="string">"// Generated code. Do not modify!\n"</span>);</div><div class="line">      builder.append(<span class="string">"package "</span>).append(packageName).append(<span class="string">";\n\n"</span>);</div><div class="line">      builder.append(<span class="string">"import com.zhy.m.permission.*;\n"</span>);</div><div class="line">      builder.append(<span class="string">'\n'</span>);</div><div class="line"></div><div class="line">      builder.append(<span class="string">"public class "</span>).append(proxyClassName).append(<span class="string">" implements "</span> + ProxyInfo.PROXY + <span class="string">"&lt;"</span> + typeElement.getSimpleName() + <span class="string">"&gt;"</span>);</div><div class="line">      builder.append(<span class="string">" &#123;\n"</span>);</div><div class="line"></div><div class="line">      generateMethods(builder);</div><div class="line">      builder.append(<span class="string">'\n'</span>);</div><div class="line"></div><div class="line">      builder.append(<span class="string">"&#125;\n"</span>);</div><div class="line">      <span class="keyword">return</span> builder.toString();</div><div class="line">  &#125;</div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">generateMethods</span><span class="params">(StringBuilder builder)</span> </span>&#123;</div><div class="line">      generateGrantMethod(builder);</div><div class="line">      generateDeniedMethod(builder);</div><div class="line">      generateRationaleMethod(builder);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">generateRationaleMethod</span><span class="params">(StringBuilder builder)</span> </span>&#123;</div><div class="line">      builder.append(<span class="string">"@Override\n "</span>);</div><div class="line">      builder.append(<span class="string">"public void rationale("</span> + typeElement.getSimpleName() + <span class="string">" source , int requestCode) &#123;\n"</span>);</div><div class="line">      builder.append(<span class="string">"switch(requestCode) &#123;"</span>);</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> code : rationaleMethodMap.keySet()) &#123;</div><div class="line">          builder.append(<span class="string">"case "</span> + code + <span class="string">":"</span>);</div><div class="line">          builder.append(<span class="string">"source."</span> + rationaleMethodMap.get(code) + <span class="string">"();"</span>);</div><div class="line">          builder.append(<span class="string">"break;"</span>);</div><div class="line">      &#125;</div><div class="line">      builder.append(<span class="string">"&#125;"</span>);</div><div class="line">      builder.append(<span class="string">"  &#125;\n"</span>);</div><div class="line">      builder.append(<span class="string">"@Override\n "</span>);</div><div class="line">      builder.append(<span class="string">"public boolean needShowRationale(int requestCode) &#123;\n"</span>);</div><div class="line">      builder.append(<span class="string">"switch(requestCode) &#123;"</span>);</div><div class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> code : rationaleMethodMap.keySet()) &#123;</div><div class="line">          builder.append(<span class="string">"case "</span> + code + <span class="string">":"</span>);</div><div class="line">          builder.append(<span class="string">"return true;"</span>);</div><div class="line">      &#125;</div><div class="line">      builder.append(<span class="string">"&#125;\n"</span>);</div><div class="line">      builder.append(<span class="string">"return false;"</span>);</div><div class="line">      builder.append(<span class="string">"  &#125;\n"</span>);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>创建一个StringBuilder对象，拼接出一个一个类的全部内容，代码不难理解。来看看结果是什么样的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	<span class="comment">// Generated code. Do not modify!</span></div><div class="line"><span class="keyword">package</span> com.zhy.permission_sample;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.zhy.m.permission.*;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span>$$<span class="title">PermissionProxy</span> <span class="keyword">implements</span> <span class="title">PermissionProxy</span>&lt;<span class="title">MainActivity</span>&gt; </span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">grant</span><span class="params">(MainActivity source, <span class="keyword">int</span> requestCode)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                source.requestSdcardSuccess();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">3</span>:</div><div class="line">                source.requestCallPhoneSuccess();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">denied</span><span class="params">(MainActivity source, <span class="keyword">int</span> requestCode)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                source.requestSdcardFailed();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="number">3</span>:</div><div class="line">                source.requestCallPhoneFailed();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">rationale</span><span class="params">(MainActivity source, <span class="keyword">int</span> requestCode)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                source.whyNeedSdCard();</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">needShowRationale</span><span class="params">(<span class="keyword">int</span> requestCode)</span> </span>&#123;</div><div class="line">        <span class="keyword">switch</span> (requestCode) &#123;</div><div class="line">            <span class="keyword">case</span> <span class="number">2</span>:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>跟上文中所设计的StringBuilder一致，这样我们就通过编译时注解的方式自动生成了一个类。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/12/28/极速打包流程/" data-toggle="tooltip" data-placement="top" title="极速打包流程">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/12/26/Tinker流程介绍/" data-toggle="tooltip" data-placement="top" title="Tinker流程介绍">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#运行时权限" title="运行时权限">运行时权限</a>
+                        
+                          <a class="tag" href="/tags/#注解" title="注解">注解</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

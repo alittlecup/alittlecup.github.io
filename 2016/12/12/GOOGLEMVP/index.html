@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          GOOGLE TODO-MVP 学习笔记 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2016/12/12/GOOGLEMVP/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>GOOGLE TODO-MVP 学习笔记</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by one_cup on
+                        2016-12-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="GOOGLE-TODO-MVP-学习笔记"><a href="#GOOGLE-TODO-MVP-学习笔记" class="headerlink" title="GOOGLE TODO-MVP 学习笔记"></a>GOOGLE TODO-MVP 学习笔记</h1><blockquote>
+<p>背景（可忽略）：《GOOGLE TODO-MVP 学习笔记》这篇文章主要会记录自己在根据TODO-MVP这个项目学习MVP的过程中的一些心得和想法，一是为了自己记录下来，二是为了说出来，增强自己的理解。</p>
+<p>由于时间及经验有限，文中可能存在错误与不足，欢迎大家指出，我会第一时间对文章进行修改纠正。</p>
+</blockquote>
+<p>如果对MVP模式不是很了解的，可以先去看看相关文章，这里推荐<a href="http://www.jianshu.com/users/0ad0a0afc409/latest_articles" target="_blank" rel="external">diygreen</a>的两篇文章，MVP详解上下。</p>
+<p>google 项目地址：<br><a href="https://github.com/googlesamples/android-architecture/" target="_blank" rel="external">https://github.com/googlesamples/android-architecture/</a><br>选择不同的分支，本文的是TODO-MVP，也是最基础的</p>
+<p>本文主要讲了两个部分</p>
+<ol>
+<li>在TODO-MVP中是如何实现MVP的</li>
+<li>一个简单的单元测试 </li>
+</ol>
+<h2 id="TODO-MVP"><a href="#TODO-MVP" class="headerlink" title="TODO-MVP"></a>TODO-MVP</h2><p>先来一个整体的概览：</p>
+<p><img src="http://i.imgur.com/zVk2KcS.png" alt=""></p>
+<p>整个项目结构特别清晰，最外层是五个文件夹，两个代码目录，三个测试目录，之前你看文章有说四个测试目录的，不过个人不是很认同。其中在main文件夹下是我们主要的代码，展开的部分就是，可以看到是按照业务模块划分的，从上到下依次是<strong>添加模块</strong>，<strong>数据层</strong>，<strong>统计模块</strong>，<strong>详细模块</strong>，<strong>展示模块</strong>，<strong>工具类</strong>，<strong>PV基类</strong>，名字起的有些随意，再看每一个包中的具体类，以tasks为例：</p>
+<ul>
+<li>ScrollChildSwipeRefreshLayout—-自定义View</li>
+<li>TasksActivity——————–负责创建V,P</li>
+<li>TasksContract——————–接口，V,P接口的纽带</li>
+<li>TasksFilterType——————枚举类</li>
+<li>TasksFragment——————–View层实现类</li>
+<li>TasksPresenter——————-Presenter层实现类</li>
+</ul>
+<p>先以代码的方式了解下View层和Presenter层是如果创建并工作的，先来看看Activity：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">  <span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">      <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">      setContentView(R.layout.tasks_act);</div><div class="line"></div><div class="line">      <span class="comment">//UI相关初始化，忽略</span></div><div class="line"><span class="comment">//通过工具类创建一个Fragment，是View层的实现类</span></div><div class="line">      TasksFragment tasksFragment =</div><div class="line">              (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);</div><div class="line">      <span class="keyword">if</span> (tasksFragment == <span class="keyword">null</span>) &#123;</div><div class="line">          <span class="comment">// Create the fragment</span></div><div class="line">          tasksFragment = TasksFragment.newInstance();</div><div class="line">          ActivityUtils.addFragmentToActivity(</div><div class="line">                  getSupportFragmentManager(), tasksFragment, R.id.contentFrame);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">// Create the presenter</span></div><div class="line"><span class="comment">// 创建一个Presenter</span></div><div class="line">      mTasksPresenter = <span class="keyword">new</span> TasksPresenter(</div><div class="line">              Injection.provideTasksRepository(getApplicationContext()), tasksFragment);</div><div class="line"></div><div class="line">      <span class="comment">// Load previously saved state, if available.</span></div><div class="line"><span class="comment">//恢复界面中Task的类别</span></div><div class="line">      <span class="keyword">if</span> (savedInstanceState != <span class="keyword">null</span>) &#123;</div><div class="line">          TasksFilterType currentFiltering =</div><div class="line">                  (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);</div><div class="line">          mTasksPresenter.setFiltering(currentFiltering);</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>可以看到在Activity初始化的时候分别创建了一个Fragment（View的实现类），一个TasksPresenter（Presenter的实现类），注意Presenter在构建的时候需要传入一个View对象。接下来看看Presenter初始化的时候都做了些什么：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;-- Injection -- &gt;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Injection</span> </span>&#123;</div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> TasksRepository <span class="title">provideTasksRepository</span><span class="params">(@NonNull Context context)</span> </span>&#123;</div><div class="line">       	checkNotNull(context);</div><div class="line">       	<span class="keyword">return</span> TasksRepository.getInstance(FakeTasksRemoteDataSource.getInstance(),</div><div class="line">               	TasksLocalDataSource.getInstance(context));</div><div class="line">   	&#125;</div><div class="line">&#125;</div><div class="line">&lt;-- Taskspresenter -- &gt;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">final</span> TasksRepository mTasksRepository;</div><div class="line"></div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> TasksContract.View mTasksView;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">TasksPresenter</span><span class="params">(@NonNull TasksRepository tasksRepository, @NonNull TasksContract.View tasksView)</span> </span>&#123;</div><div class="line">       mTasksRepository = checkNotNull(tasksRepository, <span class="string">"tasksRepository cannot be null"</span>);</div><div class="line">       mTasksView = checkNotNull(tasksView, <span class="string">"tasksView cannot be null!"</span>);</div><div class="line">	<span class="comment">//为View层设置对应的Presenter层对象</span></div><div class="line">       mTasksView.setPresenter(<span class="keyword">this</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>先通过Injection的静态方法provideTasksRepository（）创建一个TasksRepository(Model层的实现类)，之后将其与Fragment通过构造函数传递到Presenter中，这样在P层初始化的时候就持有了M和V的对象。之后会通过View.setPresenter(P)方法为View层设置对应的Presenter。看一下Fragment中的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;-- BaseView -- &gt;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">BaseView</span>&lt;<span class="title">T</span>&gt; </span>&#123;</div><div class="line">   	<span class="function"><span class="keyword">void</span> <span class="title">setPresenter</span><span class="params">(T presenter)</span></span>;</div><div class="line">&#125;</div><div class="line">&lt;-- TasksFragment -- &gt;</div><div class="line"></div><div class="line"><span class="keyword">private</span> TasksContract.Presenter mPresenter;</div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPresenter</span><span class="params">(@NonNull TasksContract.Presenter presenter)</span> </span>&#123;</div><div class="line">       mPresenter = checkNotNull(presenter);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>先在View的基类中声明抽象的设置方法，然后在Presenter初始化的时候将Presenter注入到View中。</p>
+<p><strong>总结一下：</strong></p>
+<ol>
+<li>在Activity创建的时候创建一个View对象，一个Presenter对象。</li>
+<li>在创建presenter的时候将一个Model，上一步中创建好的View，通过构造函数注入到Presenter中。</li>
+<li>在Presenter的构造方法中，通过View.setPresenter(P)方法，将Presenter设置到View中。</li>
+</ol>
+<p><img src="http://i.imgur.com/5UBB8m3.png" alt=""></p>
+<p>接下来以一个简单的例子来走一遍整体流程，以添加一个loadTasks为例：</p>
+<p>第一步： 在TasksFragment的onResume（）方法中，Presenter层开始工作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;-- TasksFragment --&gt;</div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onResume</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">super</span>.onResume();</div><div class="line">       mPresenter.start();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>第二步： TasksPresenter.start()方法中调用了loadTasks（）方法，我们需要在TasksContract.Presenter中去规定这个方法，然后再在TasksPresenter中去实现它</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;-- TasksPresenter --&gt;</div><div class="line">   <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> </span>&#123;</div><div class="line">       loadTasks(<span class="keyword">false</span>);</div><div class="line">   &#125;</div><div class="line"></div><div class="line">&lt;-- TasksContract.Presenter --&gt;</div><div class="line"> <span class="function"><span class="keyword">void</span> <span class="title">loadTasks</span><span class="params">(<span class="keyword">boolean</span> forceUpdate)</span></span>;</div><div class="line"></div><div class="line">&lt;-- TasksPresenter --&gt;</div><div class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> mFirstLoad = <span class="keyword">true</span>;</div><div class="line"> <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadTasks</span><span class="params">(<span class="keyword">boolean</span> forceUpdate)</span> </span>&#123;</div><div class="line">       <span class="comment">// Simplification for sample: a network reload will be forced on first load.</span></div><div class="line">       loadTasks(forceUpdate || mFirstLoad, <span class="keyword">true</span>);</div><div class="line">       mFirstLoad = <span class="keyword">false</span>;</div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadTasks</span><span class="params">(<span class="keyword">boolean</span> forceUpdate, <span class="keyword">final</span> <span class="keyword">boolean</span> showLoadingUI)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (showLoadingUI) &#123;</div><div class="line">           mTasksView.setLoadingIndicator(<span class="keyword">true</span>);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span> (forceUpdate) &#123;</div><div class="line">           mTasksRepository.refreshTasks();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">// The network request might be handled in a different thread so make sure Espresso knows</span></div><div class="line">       <span class="comment">// that the app is busy until the response is handled.</span></div><div class="line">       EspressoIdlingResource.increment(); <span class="comment">// App is busy until further notice</span></div><div class="line">	<span class="comment">//调用TasksRepository.getTasks方法去获取数据</span></div><div class="line">       mTasksRepository.getTasks(<span class="keyword">new</span> TasksDataSource.LoadTasksCallback() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</div><div class="line">               List&lt;Task&gt; tasksToShow = <span class="keyword">new</span> ArrayList&lt;Task&gt;();</div><div class="line"></div><div class="line">               <span class="comment">// This callback may be called twice, once for the cache and once for loading</span></div><div class="line">               <span class="comment">// the data from the server API, so we check before decrementing, otherwise</span></div><div class="line">               <span class="comment">// it throws "Counter has been corrupted!" exception.</span></div><div class="line">               <span class="keyword">if</span> (!EspressoIdlingResource.getIdlingResource().isIdleNow()) &#123;</div><div class="line">                   EspressoIdlingResource.decrement(); <span class="comment">// Set app as idle.</span></div><div class="line">               &#125;</div><div class="line">               <span class="comment">// We filter the tasks based on the requestType</span></div><div class="line">			<span class="comment">//筛选想要类型的Task</span></div><div class="line">               <span class="keyword">for</span> (Task task : tasks) &#123;</div><div class="line">                   <span class="keyword">switch</span> (mCurrentFiltering) &#123;</div><div class="line">                       <span class="keyword">case</span> ALL_TASKS:</div><div class="line">                           tasksToShow.add(task);</div><div class="line">                           <span class="keyword">break</span>;</div><div class="line">                       <span class="keyword">case</span> ACTIVE_TASKS:</div><div class="line">                           <span class="keyword">if</span> (task.isActive()) &#123;</div><div class="line">                               tasksToShow.add(task);</div><div class="line">                           &#125;</div><div class="line">                           <span class="keyword">break</span>;</div><div class="line">                       <span class="keyword">case</span> COMPLETED_TASKS:</div><div class="line">                           <span class="keyword">if</span> (task.isCompleted()) &#123;</div><div class="line">                               tasksToShow.add(task);</div><div class="line">                           &#125;</div><div class="line">                           <span class="keyword">break</span>;</div><div class="line">                       <span class="keyword">default</span>:</div><div class="line">                           tasksToShow.add(task);</div><div class="line">                           <span class="keyword">break</span>;</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">               <span class="comment">// The view may not be able to handle UI updates anymore</span></div><div class="line">               <span class="keyword">if</span> (!mTasksView.isActive()) &#123;</div><div class="line">                   <span class="keyword">return</span>;</div><div class="line">               &#125;</div><div class="line">               <span class="keyword">if</span> (showLoadingUI) &#123;</div><div class="line">                   mTasksView.setLoadingIndicator(<span class="keyword">false</span>);</div><div class="line">               &#125;</div><div class="line"></div><div class="line">               processTasks(tasksToShow);</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span> </span>&#123;</div><div class="line">               <span class="comment">// The view may not be able to handle UI updates anymore</span></div><div class="line">               <span class="keyword">if</span> (!mTasksView.isActive()) &#123;</div><div class="line">                   <span class="keyword">return</span>;</div><div class="line">               &#125;</div><div class="line">               mTasksView.showLoadingTasksError();</div><div class="line">           &#125;</div><div class="line">       &#125;);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>第三步：调用TasksRepository.getTasks()方法，所以需要在TasksDataSource中添加getTasks，然后让TasksRepository去实现这个方法，在这个方法中调用具体的数据层的实现类mTasksRemoteDataSource，mTasksLocalDataSource中的getTasks，之后通过传递过来的接口将数据返回到Presenter中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;-- TasksRepository --&gt;</div><div class="line"><span class="comment">//具体的远程数据实现类</span></div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> TasksDataSource mTasksRemoteDataSource;</div><div class="line"><span class="comment">//具体的本地数据实现类</span></div><div class="line">   <span class="keyword">private</span> <span class="keyword">final</span> TasksDataSource mTasksLocalDataSource;</div><div class="line"><span class="comment">//内存缓存</span></div><div class="line">Map&lt;String, Task&gt; mCachedTasks;</div><div class="line"></div><div class="line">	<span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">getTasks</span><span class="params">(@NonNull <span class="keyword">final</span> LoadTasksCallback callback)</span> </span>&#123;</div><div class="line">       checkNotNull(callback);</div><div class="line"></div><div class="line">       <span class="comment">// Respond immediately with cache if available and not dirty</span></div><div class="line">       <span class="keyword">if</span> (mCachedTasks != <span class="keyword">null</span> &amp;&amp; !mCacheIsDirty) &#123;</div><div class="line">           callback.onTasksLoaded(<span class="keyword">new</span> ArrayList&lt;&gt;(mCachedTasks.values()));</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span> (mCacheIsDirty) &#123;</div><div class="line">           <span class="comment">// If the cache is dirty we need to fetch new data from the network.</span></div><div class="line">           getTasksFromRemoteDataSource(callback);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           <span class="comment">// Query the local storage if available. If not, query the network.</span></div><div class="line">           mTasksLocalDataSource.getTasks(<span class="keyword">new</span> LoadTasksCallback() &#123;</div><div class="line">               <span class="meta">@Override</span></div><div class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTasksLoaded</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</div><div class="line">                   refreshCache(tasks);</div><div class="line">                   callback.onTasksLoaded(<span class="keyword">new</span> ArrayList&lt;&gt;(mCachedTasks.values()));</div><div class="line">               &#125;</div><div class="line">               <span class="meta">@Override</span></div><div class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onDataNotAvailable</span><span class="params">()</span> </span>&#123;</div><div class="line">                   getTasksFromRemoteDataSource(callback);</div><div class="line">               &#125;</div><div class="line">           &#125;);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>第四步：调用mTasksView.showTasks()展示数据，所以需要在TasksContract.View中定义方法 void showTasks(List<task> tasks);然后在TasksFragment中去实现。</task></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;-- TasksPresneter --&gt;</div><div class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">processTasks</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (tasks.isEmpty()) &#123;</div><div class="line">           <span class="comment">// Show a message indicating there are no tasks for that filter type.</span></div><div class="line">           processEmptyTasks();</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           <span class="comment">// Show the list of tasks</span></div><div class="line">		<span class="comment">//显示查询回来的数据</span></div><div class="line">           mTasksView.showTasks(tasks);</div><div class="line">           <span class="comment">// Set the filter label's text.</span></div><div class="line">           showFilterLabel();</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">&lt;-- TasksFragment --&gt;</div><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showTasks</span><span class="params">(List&lt;Task&gt; tasks)</span> </span>&#123;</div><div class="line">       mListAdapter.replaceData(tasks);</div><div class="line"></div><div class="line">       mTasksView.setVisibility(View.VISIBLE);</div><div class="line">       mNoTasksView.setVisibility(View.GONE);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这样一个流程就跑通了，从在View中调用Presenter方法去请求数据，Presenter中调用Model方法去获取数据，Model在调用具体实现方法获取数据之后将数据通过接口返回值Presenter中，之后再调用View的方法展示数据。<br>但是，如果是按照上面的顺序去写代码的话，肯定会觉得这实在是太复杂了，多写好多东西，所以个人猜测不是应该按照上面的方式去写的，应该是这样：  </p>
+<p>第一步：在TasksContract.Presenter中去写一个方法让它去加载数据，比如LoadTasks（）；<br>第二步：在TasksDataSource中写一个方法让它去获取数据，比如getTasks（），之后再定义一个接口，用于传递数据，抽象一个方法参数是Task集合，一个简单的接口回调。<br>第三步：在TasksContract.View中写一个方法，用于展示数据，参数肯定是要展示的数据了，比如showTasks（tasks）；<br>第四步：写各自的实现方法。在View中不用考虑数据是怎么来的，只管UI的变化就好；在Presenter中不用管怎么展示，怎么获取数据，只管应该找谁要数据，之后处理一下，交给View去显示就好了；在Model中，只需要得到数据，传递给Presenter就可以了，其他的完全不用操心。 </p>
+<p>在每一个自己的层级中做自己应该做的事情，并且对其他的东西尽量少的了解，尽可能的不出现干涉，专注做自己的事情，这样代码写起来其实会清晰很多，更加富有条例，而且在以后的扩展或者修改会变得更加的容易，而不会有那种牵一发而动全身的感觉。</p>
+<p><img src="http://i.imgur.com/j6TiNpz.png" alt=""></p>
+<p>不知道各位对上面第二种写代码的方法觉得怎么样，个人认为，当接口方法确定了之后，其实整个开发工作基本上就完成百分之七十了，在View中不用去考虑业务逻辑，不用去考虑UI的变化，因为数据传递过来之后所有的事情就都已经确定了，在Presenter中不用去考虑数据的来源，在Model中不去考虑数据的预处理和变换，将所有需要做的功能或者是动作都尽可能的细化，细化到每一层的每一个方法中，在一个方法中只做一件事情，其他的并不知道，也不需要知道，剩下的工作就是简单的填充代码了。</p>
+<h2 id="一个简单的单元测试"><a href="#一个简单的单元测试" class="headerlink" title="一个简单的单元测试"></a>一个简单的单元测试</h2><p>其实在TODO-MVP中测试的代码要比正式的代码要多，虽然没有具体数过，不过从目录数量来看就已经证明了一点，测试真的很重要，我之前从来没有写过任何测试代码，也没有专门学过，只是在平时看了几篇测试相关的文章，太深的讲不了，太浅的说着也没意思，就拿一个例子来说，当然，在说具体的例子之前，如果各位对相关的单元测试的知识不是很了解的话，推荐大家几篇文章<br><a href="http://www.jianshu.com/users/b9c5c66b6a08/latest_articles" target="_blank" rel="external">邹小创</a>，相关测试文章十一篇，由浅入深，通俗易懂。<br><a href="http://www.jianshu.com/users/0ef3dc77079c/latest_articles" target="_blank" rel="external">键盘男</a>，介绍一些实际测试中的经验。<br><a href="http://blog.csdn.net/bboyfeiyu/article/details/52127551" target="_blank" rel="external">单元测试利器-Mockito 中文文档</a>介绍Mockito相关API和使用方法，很全面。<br>看过两位大神的文章之后，自己在随便浏览一些相关文章，基本上就没问题了。<br>接下来就是所谓的例子了，代码是在test文件夹下tasks包中的TasksPresenter类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">&lt;--TasksPresenterTest&gt;</div><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> List&lt;Task&gt; TASKS;</div><div class="line"></div><div class="line">   <span class="meta">@Mock</span></div><div class="line">   <span class="keyword">private</span> TasksRepository mTasksRepository;</div><div class="line"></div><div class="line">   <span class="meta">@Mock</span></div><div class="line">   <span class="keyword">private</span> TasksContract.View mTasksView;</div><div class="line"></div><div class="line">   <span class="comment">/**</span></div><div class="line">    * &#123;<span class="doctag">@link</span> ArgumentCaptor&#125; is a powerful Mockito API to capture argument values and use them to</div><div class="line">    * perform further actions or assertions on them.</div><div class="line">    */</div><div class="line">   <span class="meta">@Captor</span></div><div class="line">   <span class="keyword">private</span> ArgumentCaptor&lt;LoadTasksCallback&gt; mLoadTasksCallbackCaptor;</div><div class="line"></div><div class="line">   <span class="keyword">private</span> TasksPresenter mTasksPresenter;</div><div class="line"></div><div class="line">   <span class="meta">@Before</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setupTasksPresenter</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="comment">// Mockito has a very convenient way to inject mocks by using the @Mock annotation. To</span></div><div class="line">       <span class="comment">// inject the mocks in the test the initMocks method needs to be called.</span></div><div class="line">       MockitoAnnotations.initMocks(<span class="keyword">this</span>);</div><div class="line"></div><div class="line">       <span class="comment">// Get a reference to the class under test</span></div><div class="line">       mTasksPresenter = <span class="keyword">new</span> TasksPresenter(mTasksRepository, mTasksView);</div><div class="line"></div><div class="line">       <span class="comment">// The presenter won't update the view unless it's active.</span></div><div class="line">       when(mTasksView.isActive()).thenReturn(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">       <span class="comment">// We start the tasks to 3, with one active and two completed</span></div><div class="line">       TASKS = Lists.newArrayList(<span class="keyword">new</span> Task(<span class="string">"Title1"</span>, <span class="string">"Description1"</span>),</div><div class="line">               <span class="keyword">new</span> Task(<span class="string">"Title2"</span>, <span class="string">"Description2"</span>, <span class="keyword">true</span>), <span class="keyword">new</span> Task(<span class="string">"Title3"</span>, <span class="string">"Description3"</span>, <span class="keyword">true</span>));</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>如果上面的代码，看不明白，那还是去阅读我刚才推荐的文章，这里就简单的说一下，先是mock了两个对象,相关的model和view<br>通过<figure class="highlight java"><figcaption><span>@Before``` 注解，在所有的测试方法做初始化，依据mock的对象，创建一个presenter，设置测试桩，初始化数据。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">接下来只看一个方法：</div><div class="line"></div><div class="line">```java</div><div class="line"></div><div class="line">	&lt;--TasksPresenterTest&gt;</div><div class="line">	<span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadAllTasksFromRepositoryAndLoadIntoView</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// Given an initialized TasksPresenter with initialized tasks</span></div><div class="line">        <span class="comment">// When loading of Tasks is requested</span></div><div class="line">		<span class="comment">//提供一个筛选的Task类型</span></div><div class="line">        mTasksPresenter.setFiltering(TasksFilterType.ALL_TASKS);</div><div class="line">		<span class="comment">//加载数据</span></div><div class="line">        mTasksPresenter.loadTasks(<span class="keyword">true</span>);</div><div class="line">		<span class="comment">// Callback is captured and invoked with stubbed tasks</span></div><div class="line">		<span class="comment">//验证model的加载数据的方法是否执行，并且对入参进行捕获</span></div><div class="line">        verify(mTasksRepository).getTasks(mLoadTasksCallbackCaptor.capture());</div><div class="line">		<span class="comment">//设置接口回调传递回来的数据</span></div><div class="line">        mLoadTasksCallbackCaptor.getValue().onTasksLoaded(TASKS);</div><div class="line"></div><div class="line">        <span class="comment">// Then progress indicator is shown</span></div><div class="line">		<span class="comment">//验证mock view的方法执行顺序，创建一个inorder对象</span></div><div class="line">        InOrder inOrder = inOrder(mTasksView);</div><div class="line">		<span class="comment">//验证view.setLoadingIndicator(true)是否执行</span></div><div class="line">        inOrder.verify(mTasksView).setLoadingIndicator(<span class="keyword">true</span>);</div><div class="line">        <span class="comment">// Then progress indicator is hidden and all tasks are shown in UI</span></div><div class="line">		<span class="comment">//验证view.setLoadingIndicator(false)是否执行</span></div><div class="line">        inOrder.verify(mTasksView).setLoadingIndicator(<span class="keyword">false</span>);</div><div class="line">		<span class="comment">//创建一个参数捕获器</span></div><div class="line">        ArgumentCaptor&lt;List&gt; showTasksArgumentCaptor = ArgumentCaptor.forClass(List.class);</div><div class="line">		<span class="comment">//验证view.showTasks()方法是否执行，并且执行对其参数进行捕获</span></div><div class="line">        verify(mTasksView).showTasks(showTasksArgumentCaptor.capture());</div><div class="line">		<span class="comment">//断言 判断捕获的参数也就是传入showTasks方法中的list的size是否为3</span></div><div class="line">        assertTrue(showTasksArgumentCaptor.getValue().size() == <span class="number">3</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>代码中对每一句都进行了注释，这里对参数捕获器说一下，最开始我不明白这个东西是个什么玩意，怎么工作的，网上查就说是参数捕获器，能够捕捉到一个方法的入参的相关信息。然后自己就照着demo写，写完发现一运行报错了，如果是验证方法， 或者断音之类的问题，会有相关提示的，我这报错没有啊。<br><img src="http://i.imgur.com/fZuPjf4.png" alt=""></p>
+<p>我还以为是为代码写的有问题，就把google里的代码拷过来，运行，还是不行，这就奇怪了，为什么同样的的代码在别人那就没问题，在我这就报错那，之后就开始排查问题，先一句句从下往上注释掉，运行，看看是哪句出的问题，被我发现了是这句<code>java verify(mTasksView).showTasks(showTasksArgumentCaptor.capture());</code>，这我就更不明白了，这个是展示数据的，肯定没问题的啊，然后就去原代码中去排查，从上到下看了一遍，没问题，又看了一遍没问题，然后又回到测试代码，各种改，想看看是哪的问题，就上面的那几句测试代码，我玩了半天，还是没有找到为什么，不行了，估计是自己对mock这个东西不是很了解，就去查网上的资料，看各种译文，实例文章，介绍文章。当看到这的时候我好想似乎明白了些什么。</p>
+<p><img src="http://i.imgur.com/qh66YLN.png" alt=""></p>
+<p>是不是view.showTasks()方法没有执行啊，那样的话参数就不会被捕获，所以就去之前正式代码中起添加打印语句，发现，确实没有执行，为什么没有指定那，继续往上找在数据遍历的时候：</p>
+<p><img src="http://i.imgur.com/CNaLJNt.png" alt=""></p>
+<p>我擦嘞，我居然把集合写错了，可能是敲的时候没注意直接就确定了，也没看是哪一个了，改过来之后再运行，总终于成功了，就这么个问题，搞了我一天半，不过经历了这么个事情之后，我发现对于这些基本的测试桩，验证，断言，顺序执行，熟悉的不要不要的，真是没有磨难就没有进步啊。</p>
+<p>这样一个简单的单元测试就完成了，测试内容那就是presenter加载数据，验证model获取数据，设置接口回调参数，验证view方法执行顺序，验证view方法是否执行，捕获参数，比对参数内数据。</p>
+<h3 id="多说几句"><a href="#多说几句" class="headerlink" title="多说几句"></a>多说几句</h3><p>说一下我在学习这个项目的一些心得体会吧：</p>
+<ol>
+<li>代码不是看的，一定要敲，不知道大家怎么去学习别人的项目，在我看来，最好的学习方式，就是把别人的项目敲一遍，看的时候有可能不过脑，敲的时候就肯定得思考了，为什么这么分包，应该怎么调用，之类的。</li>
+<li>什么东西都不要浮于表面，因为现在已经不是那个，我见过，我了解的时代了。要尽可能的做到，我知道，我熟悉，我敲过，我写过相关案例， 我看过源码，我了解底层实现。</li>
+<li>关于这个项目还有一部分没有介绍，那就是UI测试，目前正在看资料，之后应该会出一篇，不过应该是在整个项目都敲完的时候了。其实个人感觉，单元测试这个东西，重在经验，如果其实很容易，五六个注解，三四个方法，打桩，验证，断言，任何一个人估计半天到一天应该都差不多，感觉更重要的是正式代码的书写，如果正式代码写的不好，测试代码写都不能写，跟别说验证了，而且测试经验很重要，只有经历足够多的测试案例，才会真正掌握单元测试的精髓吧，所谓的测试驱动开发，想想就觉得好激动。</li>
+</ol>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/12/12/Cordova自定义插件实战/" data-toggle="tooltip" data-placement="top" title="Cordova自定义插件实战">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/12/12/多渠道打包实践/" data-toggle="tooltip" data-placement="top" title="多渠道打包实践">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

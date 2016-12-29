@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Tinker流程介绍 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2016/12/26/Tinker流程介绍/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/Tinker.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Tinker" title="Tinker">Tinker</a>
+                        
+                    </div>
+                    <h1>Tinker流程介绍</h1>
+                    <h2 class="subheading"> &quot;你好，未来&quot;</h2>
+                    <span class="meta">
+                        Posted by one_cup on
+                        2016-12-26
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Tinker-流程介绍"><a href="#Tinker-流程介绍" class="headerlink" title="Tinker 流程介绍"></a>Tinker 流程介绍</h1><blockquote>
+<p>最近在开发过程中遇到一个Tinker相关的问题，正好之前研究的不够透彻，借着机会好好的学习学习，本文不涉及核心的diff算法，我也不会，就是走一遍流程，看看Tinker在我们的app中都做了哪些事情。</p>
+</blockquote>
+<h2 id="编译期"><a href="#编译期" class="headerlink" title="编译期"></a>编译期</h2><p>使用过Tinker的都应该很清楚，我们在使用的时候需要自己写一个applicationlike,然后写一个注解，标注一下，这个注解的作用就是生成一个真正的application(在编译期)，而生成的application是集成TinkerApplication,只有一个super方法，参数有我们写的applicationlike和tinkerloader<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SampleApplication</span> <span class="keyword">extends</span> <span class="title">TinkerApplication</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SampleApplication</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>(<span class="number">7</span>, <span class="string">"tinker.sample.android.app.SampleApplicationLike"</span>, <span class="string">"com.tencent.tinker.loader.TinkerLoader"</span>, <span class="keyword">false</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其实应该还有很多动作，不过不了解就不多说了。</p>
+<h2 id="运行期"><a href="#运行期" class="headerlink" title="运行期"></a>运行期</h2><p>app运行的时候最开始启动的是之前自动生成的application也就是上文中的SampleApplication,调用父类构造函数，参数赋值  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	  <span class="function"><span class="keyword">protected</span> <span class="title">TinkerApplication</span><span class="params">(<span class="keyword">int</span> tinkerFlags, String delegateClassName,</span></span></div><div class="line">                                String loaderClassName, <span class="keyword">boolean</span> tinkerLoadVerifyFlag) &#123;</div><div class="line">        <span class="keyword">this</span>.tinkerFlags = tinkerFlags;</div><div class="line">        <span class="keyword">this</span>.delegateClassName = delegateClassName;</div><div class="line">        <span class="keyword">this</span>.loaderClassName = loaderClassName;</div><div class="line">        <span class="keyword">this</span>.tinkerLoadVerifyFlag = tinkerLoadVerifyFlag;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">``` </div><div class="line"> </div><div class="line"></div><div class="line">由于TinkerApplication是继承的Application，也就是说是真正的Application，那么按照接下来应该是调用attachBaseContext()方法，内部调用了onBaseContextAttached（base）方法。  </div><div class="line"></div><div class="line">```<span class="function">java</span></div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onBaseContextAttached</span><span class="params">(Context base)</span> &#123;</div><div class="line">        applicationStartElapsedTime = SystemClock.elapsedRealtime();</div><div class="line">        applicationStartMillisTime = System.currentTimeMillis();</div><div class="line">		<span class="comment">//加载TinkerLoader</span></div><div class="line">        loadTinker();</div><div class="line">		<span class="comment">//确定代理</span></div><div class="line">        ensureDelegate();</div><div class="line">		<span class="comment">//执行代理的onBaseContextAttached方法</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Method method = ShareReflectUtil.findMethod(delegate, <span class="string">"onBaseContextAttached"</span>, Context.class);</div><div class="line">            method.invoke(delegate, base);</div><div class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"onBaseContextAttached method not found"</span>, t);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//reset save mode</span></div><div class="line">        <span class="keyword">if</span> (useSafeMode) &#123;</div><div class="line">            String processName = ShareTinkerInternals.getProcessName(<span class="keyword">this</span>);</div><div class="line">            String preferName = ShareConstants.TINKER_OWN_PREFERENCE_CONFIG + processName;</div><div class="line">            SharedPreferences sp = getSharedPreferences(preferName, Context.MODE_PRIVATE);</div><div class="line">            sp.edit().putInt(ShareConstants.TINKER_SAFE_MODE_COUNT, <span class="number">0</span>).commit();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">	<span class="comment">/*</span></div><div class="line">	*利用初始化获得的字符串反射获得TinkerLoader，执行tryLoad方法，进行一系列检查，之后将结果赋值到Intent中返回</div><div class="line">	*/</div><div class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">loadTinker</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">//disable tinker, not need to install</span></div><div class="line">        <span class="keyword">if</span> (tinkerFlags == TINKER_DISABLE) &#123;</div><div class="line">            <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        tinkerResultIntent = <span class="keyword">new</span> Intent();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="comment">//reflect tinker loader, because loaderClass may be define by user!</span></div><div class="line">            Class&lt;?&gt; tinkerLoadClass = Class.forName(loaderClassName, <span class="keyword">false</span>, getClassLoader());</div><div class="line"></div><div class="line">            Method loadMethod = tinkerLoadClass.getMethod(TINKER_LOADER_METHOD, TinkerApplication.class, <span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class);</div><div class="line">            Constructor&lt;?&gt; constructor = tinkerLoadClass.getConstructor();</div><div class="line">            tinkerResultIntent = (Intent) loadMethod.invoke(constructor.newInstance(), <span class="keyword">this</span>, tinkerFlags, tinkerLoadVerifyFlag);</div><div class="line">        &#125; <span class="keyword">catch</span> (Throwable e) &#123;</div><div class="line">            <span class="comment">//has exception, put exception error code</span></div><div class="line">            ShareIntentUtil.setIntentReturnCode(tinkerResultIntent, ShareConstants.ERROR_LOAD_PATCH_UNKNOWN_EXCEPTION);</div><div class="line">            tinkerResultIntent.putExtra(INTENT_PATCH_EXCEPTION, e);</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>接下来，让我们的重点来到Tinker的初始化。在执行ApplicationLike的onBaseContextAttached方法的时候会执行TinkerInstaller.install(this),这里的this就是applicationlike。最终会执行到Tinker.install()方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">install</span><span class="params">(Intent intentResult, Class&lt;? extends AbstractResultService&gt; serviceClass,</span></span></div><div class="line">                      AbstractPatch upgradePatch) &#123;</div><div class="line">      sInstalled = <span class="keyword">true</span>;</div><div class="line">      TinkerPatchService.setPatchProcessor(upgradePatch, serviceClass);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (!isTinkerEnabled()) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"tinker is disabled"</span>);</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (intentResult == <span class="keyword">null</span>) &#123;</div><div class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"intentResult must not be null."</span>);</div><div class="line">      &#125;</div><div class="line">      tinkerLoadResult = <span class="keyword">new</span> TinkerLoadResult();</div><div class="line">      tinkerLoadResult.parseTinkerResult(getContext(), intentResult);</div><div class="line">      <span class="comment">//after load code set</span></div><div class="line">      loadReporter.onLoadResult(patchDirectory, tinkerLoadResult.loadCode, tinkerLoadResult.costTime);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (!loaded) &#123;</div><div class="line">          TinkerLog.w(TAG, <span class="string">"tinker load fail!"</span>);</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>到此，Tinker的初始化就完成了，由于使用的是单例模式，所以之后的Tinker.with(applicationlike)所产生的对象都是一样的。简单说一下整体的逻辑：  </p>
+<ol>
+<li>自动生成的application调用父类方法，传入applicationlike和TinkerLoader的包名。</li>
+<li>真正的Application中的attachBaseContext方法中通过反射，执行TinkerLoader的tryLoad方法，将结果保存到intent中。同样通过反射得到applicationlike对象，执行onBaseContextAttech（）方法。</li>
+<li>在applicationlike的onBaseContextAttech()方法中执行Tinker的初始化，设置默认的相关类，并且设置补丁进程服务属性，打印相关信息</li>
+</ol>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>Tinker的1.7.6版本中将repairPatch已经删掉了。这里只介绍一下升级就是UpgradePatch的调用，首先是onReceiveUpgradepatch()方法，入参是application和路径。之后会使用Tinker初始化时赋值的DefaultPatchListener检查路径信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"> <span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">onPatchReceived</span><span class="params">(String path)</span> </span>&#123;</div><div class="line"></div><div class="line">       <span class="keyword">int</span> returnCode = patchCheck(path);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (returnCode == ShareConstants.ERROR_PATCH_OK) &#123;</div><div class="line">           TinkerPatchService.runPatchService(context, path);</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">           Tinker.with(context).getLoadReporter().onLoadPatchListenerReceiveFail(<span class="keyword">new</span> File(path), returnCode);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> returnCode;</div><div class="line"></div><div class="line">   &#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">patchCheck</span><span class="params">(String path)</span> </span>&#123;</div><div class="line">       Tinker manager = Tinker.with(context);</div><div class="line">       <span class="comment">//check SharePreferences also</span></div><div class="line">       <span class="keyword">if</span> (!manager.isTinkerEnabled() || !ShareTinkerInternals.isTinkerEnableWithSharedPreferences(context)) &#123;</div><div class="line">           <span class="keyword">return</span> ShareConstants.ERROR_PATCH_DISABLE;</div><div class="line">       &#125;</div><div class="line">       File file = <span class="keyword">new</span> File(path);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (!file.isFile() || !file.exists() || file.length() == <span class="number">0</span>) &#123;</div><div class="line">           <span class="keyword">return</span> ShareConstants.ERROR_PATCH_NOTEXIST;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">//patch service can not send request</span></div><div class="line">       <span class="keyword">if</span> (manager.isPatchProcess()) &#123;</div><div class="line">           <span class="keyword">return</span> ShareConstants.ERROR_PATCH_INSERVICE;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">//if the patch service is running, pending</span></div><div class="line">       <span class="keyword">if</span> (TinkerServiceInternals.isTinkerPatchServiceRunning(context)) &#123;</div><div class="line">           <span class="keyword">return</span> ShareConstants.ERROR_PATCH_RUNNING;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> ShareConstants.ERROR_PATCH_OK;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>检查路径，返回值有五种</p>
+<p><img src="http://i.imgur.com/MJdcJnS.png" alt=""></p>
+<p>当返回成功时则会启动service，TinkerPatchService继承的是IntentService,主要的工作都是onHandleIntent()中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onHandleIntent</span><span class="params">(Intent intent)</span> </span>&#123;</div><div class="line">      <span class="keyword">final</span> Context context = getApplicationContext();</div><div class="line"><span class="comment">//获得单例模式的Tinker</span></div><div class="line">      Tinker tinker = Tinker.with(context);</div><div class="line"><span class="comment">//打印服务开始信息</span></div><div class="line">      tinker.getPatchReporter().onPatchServiceStart(intent);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (intent == <span class="keyword">null</span>) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"TinkerPatchService received a null intent, ignoring."</span>);</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">      String path = getPatchPathExtra(intent);</div><div class="line">      <span class="keyword">if</span> (path == <span class="keyword">null</span>) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"TinkerPatchService can't get the path extra, ignoring."</span>);</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">      &#125;</div><div class="line">      File patchFile = <span class="keyword">new</span> File(path);</div><div class="line"></div><div class="line">      <span class="keyword">long</span> begin = SystemClock.elapsedRealtime();</div><div class="line">      <span class="keyword">boolean</span> result;</div><div class="line">      <span class="keyword">long</span> cost;</div><div class="line">      Throwable e = <span class="keyword">null</span>;</div><div class="line"><span class="comment">//提高服务的进程优先级</span></div><div class="line">      increasingPriority();</div><div class="line"><span class="comment">//创建一个补丁结果接收类</span></div><div class="line">      PatchResult patchResult = <span class="keyword">new</span> PatchResult();</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          <span class="keyword">if</span> (upgradePatchProcessor == <span class="keyword">null</span>) &#123;</div><div class="line">              <span class="keyword">throw</span> <span class="keyword">new</span> TinkerRuntimeException(<span class="string">"upgradePatchProcessor is null."</span>);</div><div class="line">          &#125;</div><div class="line">	<span class="comment">//打补丁</span></div><div class="line">          result = upgradePatchProcessor.tryPatch(context, path, patchResult);</div><div class="line">      &#125; <span class="keyword">catch</span> (Throwable throwable) &#123;</div><div class="line">          e = throwable;</div><div class="line">          result = <span class="keyword">false</span>;</div><div class="line">          tinker.getPatchReporter().onPatchException(patchFile, e);</div><div class="line">      &#125;</div><div class="line"><span class="comment">//计算消耗时间</span></div><div class="line">      cost = SystemClock.elapsedRealtime() - begin;</div><div class="line"><span class="comment">//输出补丁结果日志</span></div><div class="line">      tinker.getPatchReporter().</div><div class="line">          onPatchResult(patchFile, result, cost);</div><div class="line"></div><div class="line">      patchResult.isSuccess = result;</div><div class="line">      patchResult.rawPatchFilePath = path;</div><div class="line">      patchResult.costTime = cost;</div><div class="line">      patchResult.e = e;</div><div class="line"><span class="comment">//根据补丁结果，来决定执行哪些操作</span></div><div class="line">      AbstractResultService.runResultService(context, patchResult, getPatchResultExtra(intent));</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>最主要的动作是在upgradePatchProcessor.tryPatch(context, path, patchResult)中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryPatch</span><span class="params">(Context context, String tempPatchPath, PatchResult patchResult)</span> </span>&#123;</div><div class="line">      Tinker manager = Tinker.with(context);</div><div class="line">      <span class="keyword">final</span> File patchFile = <span class="keyword">new</span> File(tempPatchPath);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (!manager.isTinkerEnabled() || !ShareTinkerInternals.isTinkerEnableWithSharedPreferences(context)) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:patch is disabled, just return"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (!patchFile.isFile() || !patchFile.exists()) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:patch file is not found, just return"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="comment">//check the signature, we should create a new checker</span></div><div class="line"><span class="comment">//签名校验</span></div><div class="line">      ShareSecurityCheck signatureCheck = <span class="keyword">new</span> ShareSecurityCheck(context);</div><div class="line"></div><div class="line">      <span class="keyword">int</span> returnCode = ShareTinkerInternals.checkTinkerPackage(context, manager.getTinkerFlags(), patchFile, signatureCheck);</div><div class="line">      <span class="keyword">if</span> (returnCode != ShareConstants.ERROR_PACKAGE_CHECK_OK) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:onPatchPackageCheckFail"</span>);</div><div class="line">          manager.getPatchReporter().onPatchPackageCheckFail(patchFile, returnCode);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">//it is a new patch, so we should not find a exist</span></div><div class="line">      SharePatchInfo oldInfo = manager.getTinkerLoadResultIfPresent().patchInfo;</div><div class="line">      String patchMd5 = SharePatchFileUtil.getMD5(patchFile);</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (patchMd5 == <span class="keyword">null</span>) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:patch md5 is null, just return"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">//use md5 as version</span></div><div class="line">      patchResult.patchVersion = patchMd5;</div><div class="line"></div><div class="line">      SharePatchInfo newInfo;</div><div class="line"></div><div class="line">      <span class="comment">//already have patch</span></div><div class="line">      <span class="keyword">if</span> (oldInfo != <span class="keyword">null</span>) &#123;</div><div class="line">          <span class="keyword">if</span> (oldInfo.oldVersion == <span class="keyword">null</span> || oldInfo.newVersion == <span class="keyword">null</span>) &#123;</div><div class="line">              TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:onPatchInfoCorrupted"</span>);</div><div class="line">              manager.getPatchReporter().onPatchInfoCorrupted(patchFile, oldInfo.oldVersion, oldInfo.newVersion);</div><div class="line">              <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">          &#125;</div><div class="line"></div><div class="line">          <span class="keyword">if</span> (oldInfo.oldVersion.equals(patchMd5) || oldInfo.newVersion.equals(patchMd5)) &#123;</div><div class="line">              TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:onPatchVersionCheckFail"</span>);</div><div class="line">              manager.getPatchReporter().onPatchVersionCheckFail(patchFile, oldInfo, patchMd5);</div><div class="line">              <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">          &#125;</div><div class="line">          newInfo = <span class="keyword">new</span> SharePatchInfo(oldInfo.oldVersion, patchMd5, Build.FINGERPRINT);</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">          newInfo = <span class="keyword">new</span> SharePatchInfo(<span class="string">""</span>, patchMd5, Build.FINGERPRINT);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">//check ok, we can real recover a new patch</span></div><div class="line">      <span class="keyword">final</span> String patchDirectory = manager.getPatchDirectory().getAbsolutePath();</div><div class="line"></div><div class="line">      TinkerLog.i(TAG, <span class="string">"UpgradePatch tryPatch:patchMd5:%s"</span>, patchMd5);</div><div class="line"></div><div class="line">      <span class="keyword">final</span> String patchName = SharePatchFileUtil.getPatchVersionDirectory(patchMd5);</div><div class="line"></div><div class="line">      <span class="keyword">final</span> String patchVersionDirectory = patchDirectory + <span class="string">"/"</span> + patchName;</div><div class="line"></div><div class="line">      TinkerLog.i(TAG, <span class="string">"UpgradePatch tryPatch:patchVersionDirectory:%s"</span>, patchVersionDirectory);</div><div class="line"></div><div class="line">      <span class="comment">//it is a new patch, we first delete if there is any files</span></div><div class="line">      <span class="comment">//don't delete dir for faster retry</span></div><div class="line"><span class="comment">//SharePatchFileUtil.deleteDir(patchVersionDirectory);</span></div><div class="line"></div><div class="line">      <span class="comment">//copy file</span></div><div class="line"><span class="comment">//生成临时文件</span></div><div class="line">      File destPatchFile = <span class="keyword">new</span> File(patchVersionDirectory + <span class="string">"/"</span> + SharePatchFileUtil.getPatchVersionFile(patchMd5));</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">          SharePatchFileUtil.copyFileUsingStream(patchFile, destPatchFile);</div><div class="line">          TinkerLog.w(TAG, <span class="string">"UpgradePatch after %s size:%d, %s size:%d"</span>, patchFile.getAbsolutePath(), patchFile.length(),</div><div class="line">              destPatchFile.getAbsolutePath(), destPatchFile.length());</div><div class="line">      &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line"><span class="comment">//  e.printStackTrace();</span></div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:copy patch file fail from %s to %s"</span>, patchFile.getPath(), destPatchFile.getPath());</div><div class="line">          manager.getPatchReporter().onPatchTypeExtractFail(patchFile, destPatchFile, patchFile.getName(), ShareConstants.TYPE_PATCH_FILE);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="comment">//we use destPatchFile instead of patchFile, because patchFile may be deleted during the patch process</span></div><div class="line"><span class="comment">//Dexdiff算法，代码</span></div><div class="line">      <span class="keyword">if</span> (!DexDiffPatchInternal.tryRecoverDexFiles(manager, signatureCheck, context, patchVersionDirectory, destPatchFile)) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:new patch recover, try patch dex failed"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"><span class="comment">//bsDiff,lib库</span></div><div class="line">      <span class="keyword">if</span> (!BsDiffPatchInternal.tryRecoverLibraryFiles(manager, signatureCheck, context, patchVersionDirectory, destPatchFile)) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:new patch recover, try patch library failed"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"><span class="comment">//ResDiff，资源文件</span></div><div class="line">      <span class="keyword">if</span> (!ResDiffPatchInternal.tryRecoverResourceFiles(manager, signatureCheck, context, patchVersionDirectory, destPatchFile)) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:new patch recover, try patch resource failed"</span>);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">final</span> File patchInfoFile = manager.getPatchInfoFile();</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (!SharePatchInfo.rewritePatchInfoFileWithLock(patchInfoFile, newInfo, SharePatchFileUtil.getPatchInfoLockFile(patchDirectory))) &#123;</div><div class="line">          TinkerLog.e(TAG, <span class="string">"UpgradePatch tryPatch:new patch recover, rewrite patch info failed"</span>);</div><div class="line">          manager.getPatchReporter().onPatchInfoCorrupted(patchFile, newInfo.oldVersion, newInfo.newVersion);</div><div class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">      &#125;</div><div class="line">      TinkerLog.w(TAG, <span class="string">"UpgradePatch tryPatch: done, it is ok"</span>);</div><div class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>上面就是Tinker最核心的地方，各种校验比对，通过之后进行合并。剩下就是决定什么时候杀进程了。        AbstractResultService.runResultService(context, patchResult, getPatchResultExtra(intent));</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPatchResult</span><span class="params">(PatchResult result)</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (result == <span class="keyword">null</span>) &#123;</div><div class="line">           TinkerLog.e(TAG, <span class="string">"DefaultTinkerResultService received null result!!!!"</span>);</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">       &#125;</div><div class="line">       TinkerLog.i(TAG, <span class="string">"DefaultTinkerResultService received a result:%s "</span>, result.toString());</div><div class="line"></div><div class="line">       <span class="comment">//first, we want to kill the recover process</span></div><div class="line">       TinkerServiceInternals.killTinkerPatchServiceProcess(getApplicationContext());</div><div class="line"></div><div class="line">       <span class="comment">// if success and newPatch, it is nice to delete the raw file, and restart at once</span></div><div class="line">       <span class="comment">// only main process can load an upgrade patch!</span></div><div class="line">       <span class="keyword">if</span> (result.isSuccess) &#123;</div><div class="line">           File rawFile = <span class="keyword">new</span> File(result.rawPatchFilePath);</div><div class="line">           <span class="keyword">if</span> (rawFile.exists()) &#123;</div><div class="line">               TinkerLog.i(TAG, <span class="string">"save delete raw patch file"</span>);</div><div class="line">               SharePatchFileUtil.safeDeleteFile(rawFile);</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">if</span> (checkIfNeedKill(result)) &#123;</div><div class="line">               android.os.Process.killProcess(android.os.Process.myPid());</div><div class="line">           &#125; <span class="keyword">else</span> &#123;</div><div class="line">               TinkerLog.i(TAG, <span class="string">"I have already install the newly patch version!"</span>);</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/12/27/JAVA编译时注解/" data-toggle="tooltip" data-placement="top" title="JAVA编译时注解">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/12/12/Cordova自定义插件实战/" data-toggle="tooltip" data-placement="top" title="Cordova自定义插件实战">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Tinker" title="Tinker">Tinker</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2016 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
