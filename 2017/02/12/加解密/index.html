@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
@@ -219,10 +219,16 @@
 <li>根据随机生成的字符串生成AES的密钥，并使用RSA对生成的密钥进行加密。  </li>
 <li>判断请求类型，GET请求则截取”?”后的字符串，将其变成Json类型并进行AES加密，POST请求则判断请求类型，加密POST的body中数据。</li>
 <li>将加密好的密文和AES的密钥根据不同的数据类型拼接成指定格式。    </li>
-<li>在加密成功的网络请求地址后面拼接加密标识。<br><strong>解密</strong>：    </li>
+<li>在加密成功的网络请求地址后面拼接加密标识。  </li>
+</ol>
+<p><strong>解密</strong>：    </p>
+<ol>
 <li>判断返回的数据类型，进行过滤。  </li>
 <li>取出body中内容，获得AES解密的密钥，与本地密钥进行拼接。  </li>
-<li>使用拼接后的密钥对数据进行解密。<br><strong>注意问题</strong>：   </li>
+<li>使用拼接后的密钥对数据进行解密。  </li>
+</ol>
+<p><strong>注意问题</strong>：   </p>
+<ol>
 <li>对POST请求类型进行过滤。   </li>
 <li>请求时，将POST请求后的Content_Type改为Json类型  </li>
 </ol>
