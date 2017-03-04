@@ -90,7 +90,7 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -104,7 +104,7 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -237,8 +237,6 @@
 <li>添加远程依赖</li>
 <li>在初始化构建OkHttpClient的时候添加加解密拦截器即可。</li>
 </ol>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p><strong>GET:</strong><br>原文：<br><a href="http://10.129.39.90:8080/myfang/user/message/query/?invokeNew=1&amp;userId=mh81047&amp;isRead=N&amp;pageNo=0&amp;pageSize=10" target="_blank" rel="external">http://10.129.39.90:8080/myfang/user/message/query/?invokeNew=1&amp;userId=mh81047&amp;isRead=N&amp;pageNo=0&amp;pageSize=10</a><br>加密后：<br><a href="http://10.129.39.90:8080/myfang/user/message/query/?params=1O_OSP2f758BUNm0iXHLNyfrQiOU99tD_31Y-xl2WAnxlqM3yxSFnojKMX8JkTlpSk-NyHmxufS4iThKX_LsB34EVWgGKvdVtHCuo66D5Yw.&amp;encryptKey=Sc2Luaj4gGEbBjsv8ek96JSMlaMlscPC_XTPwxMMKAYBEEXBku8Hsa2B1KE-6E0OhgGi7g6RxR-DNmvxQkUX-5gyGwyJ_UMlnQBMyB6Z42eDrPK6-_8qvxoHeB" target="_blank" rel="external">http://10.129.39.90:8080/myfang/user/message/query/?params=1O_OSP2f758BUNm0iXHLNyfrQiOU99tD_31Y-xl2WAnxlqM3yxSFnojKMX8JkTlpSk-NyHmxufS4iThKX_LsB34EVWgGKvdVtHCuo66D5Yw.&amp;encryptKey=Sc2Luaj4gGEbBjsv8ek96JSMlaMlscPC_XTPwxMMKAYBEEXBku8Hsa2B1KE-6E0OhgGi7g6RxR-DNmvxQkUX-5gyGwyJ_UMlnQBMyB6Z42eDrPK6-_8qvxoHeB</a><br>返回值：<br>{“showMsg”:”成功”,”data”:{“decryptKey”:”VkdzZmR5RUFOalhjMnRnUA==”,”encryptData”:”9Ojsr5qMnizxNjEjUAagbGryvsKnpSvHgSA8EQiFqLw=”},”code”:0,”msg”:”成功”}<br>解密后：<br>{“data”:{“response”:{“items”:[]}},”msg”:”成功”,”code”:0,”showMsg”:”成功”}  </p>
-<p><strong>POST</strong><br>原文：<br><a href="http://10.129.39.90:8080/myfang/agent/home/" target="_blank" rel="external">http://10.129.39.90:8080/myfang/agent/home/</a><br>Content-Type: application/x-www-form-urlencoded<br>agentId=mh81047<br>密文：<br><a href="http://10.129.39.90:8080/myfang/agent/home/?encryptFlag=true" target="_blank" rel="external">http://10.129.39.90:8080/myfang/agent/home/?encryptFlag=true</a><br>Content-Type: application/json; charset=utf-8<br>{“params”:”gfLuxwEH9TqSM5et1VeFbg..”,”encryptKey”:”bq3GqHvU3imxrLELkiN_VniQEhkIqL_nl59sit-igzykuy7IJe7BI7JnmBdZhQnfmU-UKyIcksmh7shzzInAgY6PD5xWOpPxYfZniNvZDarX1Hqc2m4fH6xgsRgDr4Wd2WGY1P1paefn1KbUmHmdcXNVonftFFFrlNdDBOkLVy8.”}<br>返回值：<br>Content-Type: text/json;charset=UTF-8<br>{“showMsg”:”成功”,”data”:{“decryptKey”:”YTZRSjZaYllWMzVhN0ZTTQ==”,”encryptData”:”LKz4MO4I6NWcGP2liCCLLgGjSb+Hb0BrYStxgDq8XfJlN3EBEEmV9UBC3ms1gxRY39cbWSx7XrzAfyLCrNwHkIZ/3nyL8rizzXU9hWoElwjpET286yFkdu3DTzB6C64qo66NNpj/eavCyqF87doab/LArBVnKfOutqM6PSS9fugtuY9bBe6YvyWyRj2VbqVUTidM/iKC0xWfibLAUYWBoLvQ6iWZr/+LqetP+iM5OaRiwmaePpLMBS1X6Uaz7Ov1dI6mnRJ9PzBuwxAmixksnd/iM99TYUGT2ZwSnUIKdZK4FEm7a5NLHXQsQMbJPJkEapH5CmVFxnlEwCVD8TGB0uVY7NTt5FsFYHjsatzbQn3CPoTtA0As6CKYgpywg0IRcHTRyIKafqa4q8UdIEFuqyub6MMS/ev6A/55LIHJ5KKA858DNugUgmg3QdRx8zwLFxYwmOIadMnYfm31j8Nmgg==”},”code”:0,”msg”:”成功”}<br>解密后：<br>{“data”:{“response”:{“paymentOnGoingAmt”:”0.00”,”surveyNbr”:”0”,”paymentOnGoingNbr”:”0”,”surveyAmt”:”0.00”,”firstTrialAmt”:”0.00”,”netLoanAmt”:”0.00”,”decisionNbr”:”0”,”waitApplyAmt”:”0.00”,”firstTrialNbr”:”0”,”decisionAmt”:”0.00”,”netLoanNbr”:”0”,”mortgageNbr”:”0”,”waitApplyNbr”:”1”,”notarizationAmt”:”0.00”,”mortgageAmt”:”0.00”,”notarizationNbr”:”0”}},”msg”:”成功”,”code”:0,”showMsg”:”成功”}</p>
 
 
                 <hr>
