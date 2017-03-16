@@ -13,11 +13,11 @@
 
     <title>
         
-          Archives - one_cup的博客 | one_cup&#39;s Blog
+          解决AAR包引用第三方依赖无效 - one_cup的博客 | one_cup&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://alittlecup.github.io/archives/">
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/16/解决AAR包中引用第三方无效/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -147,179 +147,125 @@
 
 
     <!-- Main Content -->
-    <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/tag-bg.jpg')">
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/dragon.jpg')
+    }
+</style>
+<header class="intro-header" >
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
-                <div class="site-heading">
-                    <h1>Archives</h1>
-                    <!--<hr class="small">-->
-                    <span class="subheading">Hey, this is Archives.</span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
+                        
+                    </div>
+                    <h1>解决AAR包引用第三方依赖无效</h1>
+                    <h2 class="subheading"> &quot;一次工作总结&quot;</h2>
+                    <span class="meta">
+                        Posted by hbl on
+                        2017-03-16
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <!-- 归档列表 -->
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
 
-            
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
 
-             <!-- 归档列表 -->
+                <h1 id="解决AAR包引用第三方依赖无效"><a href="#解决AAR包引用第三方依赖无效" class="headerlink" title="解决AAR包引用第三方依赖无效"></a>解决AAR包引用第三方依赖无效</h1><p>遇到一个之前都没有注意到的问题，在拆分公共组件的时候，将一些公用模块打成aar,然后放到公司的私服maven上，出现这样一个问题，有的aar中引用了类似RxJava,Okhttp等第三方库，发现在主项目中仍需要添加相应依赖才能使用，按理来说，正常使用module的时候，主项目应该也是可以直接使用module中的依赖才对，不清楚为什么会出现这种原因，然后就各种查资料，查看公司maven中的pom文件等等方式，出现了分歧。</p>
+<h2 id="A-方案"><a href="#A-方案" class="headerlink" title="A 方案"></a>A 方案</h2><p>作为一个反面例子。我第一反应是去查aar包中是否能使用compile这种方式的依赖，查到的都是一些垃圾，完全没有用的东西，然后又人说需要本地jar是可用的，远程依赖不行，之后又把aar文件打开看了看，确实没有远程依赖的jar，之后的思路就是想办法把当前项目依赖的远程库的jar移动到本地项目目录中，这样不aar打包的时候不就把第三方的带过去了嘛。当然这是反面例子。</p>
+<h2 id="B-方案"><a href="#B-方案" class="headerlink" title="B 方案"></a>B 方案</h2><p>作为一个成功例子。公司老司机。第一反应是Gradle应该是支持这种多层依赖方式的，老司机先google了相关资料，然后去了解maven的加载机制，之后就去看了gradle的源码，并没有从网络上查各种二手的解决方式，然后经过大概两个小时之后，老司机告诉我解决了，当时我还在冥思苦想怎么从获取当前项目所依赖的jar包。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>源码中的注释：  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">* apply plugin: <span class="string">'java'</span> <span class="comment">//so that I can declare 'compile' dependencies</span></div><div class="line"> *</div><div class="line"> * dependencies &#123;</div><div class="line"> *   compile(<span class="string">'org.hibernate:hibernate:3.1'</span>) &#123;</div><div class="line"> *     <span class="comment">//in case of versions conflict '3.1' version of hibernate wins:</span></div><div class="line"> *     force = <span class="keyword">true</span></div><div class="line"> *</div><div class="line"> *     <span class="comment">//excluding a particular transitive dependency:</span></div><div class="line"> *     exclude <span class="keyword">module</span>: <span class="string">'cglib'</span> <span class="comment">//by artifact name</span></div><div class="line"> *     exclude group: <span class="string">'org.jmock'</span> <span class="comment">//by group</span></div><div class="line"> *     exclude group: <span class="string">'org.unwanted'</span>, <span class="keyword">module</span>: <span class="string">'iAmBuggy'</span> <span class="comment">//by both name and group</span></div><div class="line"> *</div><div class="line"> *     <span class="comment">//disabling all transitive dependencies of this dependency</span></div><div class="line"> *     transitive = <span class="keyword">false</span></div><div class="line"> *   &#125;</div><div class="line"> * &#125;</div></pre></td></tr></table></figure>
+<p>如果本地有gradle的源码，点击compile是可以跳转过去的，然后从最上面往下看，就会发现这段代码，其中最后一个标识：transitive ，表示当前依赖是否可以传递，默认是false,然后当使用aar的时候直接在主项目中加上这句话就可以了。具体的还有一些其他的使用有兴趣的可以自行去了解。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>不是说我大天朝不好，也不是说国内的技术环境差，这个事情给我最大的感觉就是，百度真是不行，你看到的和你想要知道根本就是刘亦菲和如花的区别，根本没有用，而且抄袭的气氛太严重，全是一样的内容，搬来搬去的，有什么意思？还有就是自我的总结，解决问题能力不行，习惯了吃二手的资料，不劳而获，会越来越降低解决问题的能力。同样的事情，我用了两个小时，收获甚微，而且没有解决，老司机也是两个小时，看了五六篇源码，了解其运行机制，并成功解决。这差距。。。</p>
 
 
+                <hr>
 
-            
-            <div class="one-tag-list">
-                <span class="fa fa-calendar-times-o listing-seperator" id="2017">
-                    <span class="tag-text">2017</span>
-                </span>
-                <ul>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    03-16
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2017/03/16/解决AAR包中引用第三方无效/" style="color: #0085a1">
-                        <span>
-                            解决AAR包引用第三方依赖无效
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    02-12
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2017/02/12/加解密/" style="color: #0085a1">
-                        <span>
-                            安全加解密
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
                 
 
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/02/12/加解密/" data-toggle="tooltip" data-placement="top" title="安全加解密">Next Post &rarr;</a>
+                        </li>
+                    
                 </ul>
-            </div>
-            
-            <div class="one-tag-list">
-                <span class="fa fa-calendar-times-o listing-seperator" id="2016">
-                    <span class="tag-text">2016</span>
-                </span>
-                <ul>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-28
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/28/极速打包流程/" style="color: #0085a1">
-                        <span>
-                            极速打包流程
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-27
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/27/JAVA编译时注解/" style="color: #0085a1">
-                        <span>
-                            JAVA编译时注解
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-26
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/26/Tinker流程介绍/" style="color: #0085a1">
-                        <span>
-                            Tinker流程介绍
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-12
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/12/多渠道打包实践/" style="color: #0085a1">
-                        <span>
-                            多渠道打包实践
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-12
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/12/Cordova自定义插件实战/" style="color: #0085a1">
-                        <span>
-                            Cordova自定义插件实战
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <li >
-                    12-12
-                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    <a href="/2016/12/12/GOOGLEMVP/" style="color: #0085a1">
-                        <span>
-                            GOOGLE TODO-MVP 学习笔记
-                        </span>
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </li>
+
                 
 
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
                 </ul>
+                
             </div>
-            
-
 
         </div>
     </div>
-</div>
+</article>
+
+
+
+
+
+
+
 
 
     <!-- Footer -->

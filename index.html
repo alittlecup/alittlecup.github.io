@@ -90,13 +90,6 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -105,6 +98,13 @@
                         
                         <li>
                             <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -181,6 +181,27 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2017/03/16/解决AAR包中引用第三方无效/">
+        <h2 class="post-title">
+            解决AAR包引用第三方依赖无效
+        </h2>
+        <h3 class="post-subtitle">
+             "一次工作总结"
+        </h3>
+        <div class="post-content-preview">
+            解决AAR包引用第三方依赖无效遇到一个之前都没有注意到的问题，在拆分公共组件的时候，将一些公用模块打成aar,然后放到公司的私服maven上，出现这样一个问题，有的aar中引用了类似RxJava,Okhttp等第三方库，发现在主项目中仍需要添加相应依赖才能使用，按理来说，正常使用module的时候，主项目应该也是可以直接使用module中的依赖才对，不清楚为什么会出现这种原因，然后就各种查资......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by hbl on
+        2017-03-16
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -385,6 +406,8 @@ packer-ng-plugin目前所了解的最快的打包方案，并且Tinker也鼓励�
                     <!-- no hr -->
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
+                        
+                            
                         
                             
                         
