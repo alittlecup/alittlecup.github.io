@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          OkHttp中https的使用 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/20/okhttp中https的使用/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/zero.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
+                        
+                    </div>
+                    <h1>OkHttp中https的使用</h1>
+                    <h2 class="subheading"> &quot;https&quot;</h2>
+                    <span class="meta">
+                        Posted by hbl on
+                        2017-03-20
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="OkHttp中https的使用"><a href="#OkHttp中https的使用" class="headerlink" title="OkHttp中https的使用"></a>OkHttp中https的使用</h1><p>最近项目升级使用Https进行网络通信，之前的其实也是https不过没有加相关的校验，正好之前我是负责网络通信加密相关的，就研究了一下具体okhttp中对于https是如何处理的。</p>
+<h2 id="简单初始化"><a href="#简单初始化" class="headerlink" title="简单初始化"></a>简单初始化</h2><p>一个简单的初始化动作，其中比较关键的就是hostnameVerifier和sslSocketFactory这两个方法<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">OkHttpClient okHttpClient = <span class="keyword">new</span> OkHttpClient.Builder()</div><div class="line">               .connectTimeout(<span class="number">20000L</span>, TimeUnit.MILLISECONDS)</div><div class="line">               .readTimeout(<span class="number">20000L</span>, TimeUnit.MILLISECONDS)</div><div class="line">               .addInterceptor(<span class="keyword">new</span> LoggerInterceptor(<span class="string">"TAG"</span>))</div><div class="line">               .hostnameVerifier(<span class="keyword">new</span> HostnameVerifier() &#123;</div><div class="line">                   <span class="meta">@Override</span></div><div class="line">                   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>&#123;</div><div class="line">                       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                   &#125;</div><div class="line">               &#125;)</div><div class="line">               .sslSocketFactory(sslParams.sSLSocketFactory,sslParams.trustManager)</div><div class="line">               .build();</div></pre></td></tr></table></figure></p>
+<p>其中sslSocketFactory传入两个参数，一个是SSLSocketFactory,另一个是TrustManager,通常都是写一个HttpsUtils，里面持有这两个对象，读取本地的一个证书，进行相关初始化赋值动作。  hostnameVerifier则是对服务端返回的一些信息进行相关校验的地方， 用于客户端判断所连接的服务端是否可信，通常默认return true,或者简单校验hostname是否正确，默认不使用的话会调用okhttp的OkHostnameVerifier:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String host, X509Certificate certificate)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> verifyAsIpAddress(host)</div><div class="line">        ? verifyIpAddress(host, certificate)</div><div class="line">        : verifyHostname(host, certificate);</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>其中会校验IP地址和hostnanme两项，我能可以在这个接口中获取服务端的证书，来校验更多的内容。</p>
+<h2 id="调用逻辑"><a href="#调用逻辑" class="headerlink" title="调用逻辑"></a>调用逻辑</h2><p>对于一个android开发来说，目前的网络请求框架大部分都是使用okhttp进行网络请求的，okhttputils，或者retrofit,所以了解okhttp是如何具体工作的对于我们平时开发有很大的帮助，推荐<a href="http://www.jianshu.com/nb/402595" target="_blank" rel="external">http://www.jianshu.com/nb/402595</a>作者介绍了很多关于网络请求方法的源码分析，推荐阅读。接下来步入正题，当我们使用https进行网络请求的时候最终进行连接的类是RealConnection,关键代码：   </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">connectTls</span><span class="params">(<span class="keyword">int</span> readTimeout, <span class="keyword">int</span> writeTimeout,</span></span></div><div class="line">     ConnectionSpecSelector connectionSpecSelector) <span class="keyword">throws</span> IOException &#123;</div><div class="line">   Address address = route.address();</div><div class="line">   SSLSocketFactory sslSocketFactory = address.sslSocketFactory();</div><div class="line">   <span class="keyword">boolean</span> success = <span class="keyword">false</span>;</div><div class="line">   SSLSocket sslSocket = <span class="keyword">null</span>;</div><div class="line">   <span class="keyword">try</span> &#123;</div><div class="line">     <span class="comment">// Create the wrapper over the connected socket.</span></div><div class="line"><span class="comment">//创建Socket</span></div><div class="line">     sslSocket = (SSLSocket) sslSocketFactory.createSocket(</div><div class="line">         rawSocket, address.url().host(), address.url().port(), <span class="keyword">true</span> <span class="comment">/* autoClose */</span>);</div><div class="line">     <span class="comment">// Configure the socket's ciphers, TLS versions, and extensions.</span></div><div class="line">     ConnectionSpec connectionSpec = connectionSpecSelector.configureSecureSocket(sslSocket);</div><div class="line">     <span class="keyword">if</span> (connectionSpec.supportsTlsExtensions()) &#123;</div><div class="line">       Platform.get().configureTlsExtensions(</div><div class="line">           sslSocket, address.url().host(), address.protocols());</div><div class="line">     &#125;</div><div class="line">     <span class="comment">// Force handshake. This can throw!</span></div><div class="line">	<span class="comment">//初次握手</span></div><div class="line">     sslSocket.startHandshake();</div><div class="line">     Handshake unverifiedHandshake = Handshake.get(sslSocket.getSession());</div><div class="line">     <span class="comment">// Verify that the socket's certificates are acceptable for the target host.</span></div><div class="line"><span class="comment">//校验，回调hostnameVerifier.verify方法</span></div><div class="line">     <span class="keyword">if</span> (!address.hostnameVerifier().verify(address.url().host(), sslSocket.getSession())) &#123;</div><div class="line">       X509Certificate cert = (X509Certificate) unverifiedHandshake.peerCertificates().get(<span class="number">0</span>);</div><div class="line">       <span class="keyword">throw</span> <span class="keyword">new</span> SSLPeerUnverifiedException(<span class="string">"Hostname "</span> + address.url().host() + <span class="string">" not verified:"</span></div><div class="line">           + <span class="string">"\n    certificate: "</span> + CertificatePinner.pin(cert)</div><div class="line">           + <span class="string">"\n    DN: "</span> + cert.getSubjectDN().getName()</div><div class="line">           + <span class="string">"\n    subjectAltNames: "</span> + OkHostnameVerifier.allSubjectAltNames(cert));</div><div class="line">     &#125;</div><div class="line">     <span class="comment">// Check that the certificate pinner is satisfied by the certificates presented.</span></div><div class="line">     address.certificatePinner().check(address.url().host(),</div><div class="line">         unverifiedHandshake.peerCertificates());</div><div class="line">	<span class="comment">//后面省略</span></div></pre></td></tr></table></figure>
+<p>根本的逻辑就是这样的，主要关心的地方也是在初次握手建立连接和本地校验的那，正常情况下，我们在调用https地址的时候会先连接，就是调到上面代码的位置，之后执行初次握手，回调验证服务端是否可信，然后在进行正常的网络请求。如果在这个过程中出现异常，就会报一个证书信任的问题，出现这种情况有两方面，一是客户端验证服务端，二是服务端验证客户端。相关的可以去看鸿洋大婶的文章<br><a href="http://blog.csdn.net/lmj623565791/article/details/48129405" target="_blank" rel="external">http://blog.csdn.net/lmj623565791/article/details/48129405</a>。</p>
+<h2 id="获取证书"><a href="#获取证书" class="headerlink" title="获取证书"></a>获取证书</h2><p>主要介绍一下hostnameVerifier的两个参数，一个是hostname就是你请求地址的host,session则包括了从服务端返回的证书链。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">			<span class="meta">@Override</span></div><div class="line">                   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">verify</span><span class="params">(String hostname, SSLSession session)</span> </span>&#123;</div><div class="line">                       Certificate[] localCertificates = <span class="keyword">new</span> Certificate[<span class="number">0</span>];</div><div class="line">                       <span class="keyword">try</span> &#123;</div><div class="line">						<span class="comment">//获取证书链中的所有证书</span></div><div class="line">                           localCertificates = session.getPeerCertificates();</div><div class="line">                       &#125; <span class="keyword">catch</span> (SSLPeerUnverifiedException e) &#123;</div><div class="line">                           e.printStackTrace();</div><div class="line">                       &#125;</div><div class="line">						<span class="comment">//打印所有证书内容</span></div><div class="line">                       <span class="keyword">for</span> (Certificate c : localCertificates) &#123;</div><div class="line">                           Log.d(TAG, <span class="string">"verify: "</span>+c.toString());</div><div class="line">                       &#125;</div><div class="line">                       <span class="keyword">try</span> &#123;</div><div class="line">						<span class="comment">//将证书链中的第一个写到文件</span></div><div class="line">                           createFileWithByte(localCertificates[<span class="number">0</span>].getEncoded());</div><div class="line">                       &#125; <span class="keyword">catch</span> (CertificateEncodingException e) &#123;</div><div class="line">                           e.printStackTrace();</div><div class="line">                       &#125;</div><div class="line">                       <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                   &#125;</div><div class="line"><span class="comment">//写到文件</span></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createFileWithByte</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>&#123;</div><div class="line">       <span class="comment">// TODO Auto-generated method stub</span></div><div class="line">       <span class="comment">/**</span></div><div class="line">        * 创建File对象，其中包含文件所在的目录以及文件的命名</div><div class="line">        */</div><div class="line">       File file = <span class="keyword">new</span> File(Environment.getExternalStorageDirectory(),</div><div class="line">               <span class="string">"ca.cer"</span>);</div><div class="line">       <span class="comment">// 创建FileOutputStream对象</span></div><div class="line">       FileOutputStream outputStream = <span class="keyword">null</span>;</div><div class="line">       <span class="comment">// 创建BufferedOutputStream对象</span></div><div class="line">       BufferedOutputStream bufferedOutputStream = <span class="keyword">null</span>;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           <span class="comment">// 如果文件存在则删除</span></div><div class="line">           <span class="keyword">if</span> (file.exists()) &#123;</div><div class="line">               file.delete();</div><div class="line">           &#125;</div><div class="line">           <span class="comment">// 在文件系统中根据路径创建一个新的空文件</span></div><div class="line">           file.createNewFile();</div><div class="line">           <span class="comment">// 获取FileOutputStream对象</span></div><div class="line">           outputStream = <span class="keyword">new</span> FileOutputStream(file);</div><div class="line">           <span class="comment">// 获取BufferedOutputStream对象</span></div><div class="line">           bufferedOutputStream = <span class="keyword">new</span> BufferedOutputStream(outputStream);</div><div class="line">           <span class="comment">// 往文件所在的缓冲输出流中写byte数据</span></div><div class="line">           bufferedOutputStream.write(bytes);</div><div class="line">           <span class="comment">// 刷出缓冲输出流，该步很关键，要是不执行flush()方法，那么文件的内容是空的。</span></div><div class="line">           bufferedOutputStream.flush();</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           <span class="comment">// 打印异常信息</span></div><div class="line">           e.printStackTrace();</div><div class="line">       &#125; <span class="keyword">finally</span> &#123;</div><div class="line">           <span class="comment">// 关闭创建的流对象</span></div><div class="line">           <span class="keyword">if</span> (outputStream != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="keyword">try</span> &#123;</div><div class="line">                   outputStream.close();</div><div class="line">               &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                   e.printStackTrace();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">           <span class="keyword">if</span> (bufferedOutputStream != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="keyword">try</span> &#123;</div><div class="line">                   bufferedOutputStream.close();</div><div class="line">               &#125; <span class="keyword">catch</span> (Exception e2) &#123;</div><div class="line">                   e2.printStackTrace();</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>可以简单些一个demo，然后加上以上的代码，就可以看到相关日志，证书链通常有三个，第一个才是我们自己的，然后也能在本地看到证书文件。包含一些相关信息，包括公钥，颁发机构等，最为严苛的方式就是可以从本地读取一个证书，取公钥与服务器返回的证书公钥进行对比。</p>
+<h2 id="webview加载https的h5"><a href="#webview加载https的h5" class="headerlink" title="webview加载https的h5"></a>webview加载https的h5</h2><p>还遇到一个情况就是使用webview加载H5界面的时候可能出现空白页的情况，解决方式就是在webviewclient重载一个方法就可以，代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedSslError</span><span class="params">(WebView view, SslErrorHandler handler, SslError error)</span> </span>&#123;</div><div class="line">             handler.proceed();</div><div class="line">             view.getSettings().setJavaScriptEnabled(<span class="keyword">true</span>);</div><div class="line">         &#125;</div></pre></td></tr></table></figure></p>
+<p>handler.proceed方法是接受所有的证书，大概意思是，具体的可以去百度相关文章就可以突然想到记录一下</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>相对于https,使用okhttp进行请求的时候主要就是两个方法sslSocketfactory,hostnameverifer，加上一个HttpsUtils，一个证书就可以搞定了，使用不难，而且更改也挺方便的，更多的收获是在调试过程中对于okhttp整体请求流程的了解和熟悉，，https机制等相关知识。并且运用学到的东西成功帮助同事解决问题，学以致用，虽然没什么特别高深的知识，不过也在进步。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/03/16/解决AAR包中引用第三方无效/" data-toggle="tooltip" data-placement="top" title="解决AAR包引用第三方依赖无效">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
