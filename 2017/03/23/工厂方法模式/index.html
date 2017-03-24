@@ -13,11 +13,11 @@
 
     <title>
         
-          极速打包流程 - one_cup的博客 | one_cup&#39;s Blog
+          设计模式第二弹，工厂方法模式 - one_cup的博客 | one_cup&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://alittlecup.github.io/2016/12/28/极速打包流程/">
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/23/工厂方法模式/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -155,7 +155,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/img/girl.jpg')
+        background-image: url('/img/siyue.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#多渠道打包" title="多渠道打包">多渠道打包</a>
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
                         
                     </div>
-                    <h1>极速打包流程</h1>
-                    <h2 class="subheading"> &quot;你好，未来&quot;</h2>
+                    <h1>设计模式第二弹，工厂方法模式</h1>
+                    <h2 class="subheading">&quot;设计模式&quot;</h2>
                     <span class="meta">
-                        Posted by one_cup on
-                        2016-12-28
+                        Posted by hbl on
+                        2017-03-23
                     </span>
                 </div>
             </div>
@@ -191,19 +191,97 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <blockquote>
-<p>之前使用的是Gradle中定义productFlavors进行多渠道打包，其实在最开始接触的时候就知道有极速打包这个方案，只不过当时项目中有Tinker,抓紧上线就没使用，趁工作间隙研究研究发现，这根本就是两种方案，而且真的是很快，并且Tinker也不用那么麻烦。</p>
-</blockquote>
-<h1 id="packer-ng-plugin"><a href="#packer-ng-plugin" class="headerlink" title="packer-ng-plugin"></a>packer-ng-plugin</h1><p>目前所了解的最快的打包方案，并且Tinker也鼓励使用这种方式，github主页上介绍100个渠道包只用10秒，github地址<a href="https://github.com/mcxiaoke/packer-ng-plugin" target="_blank" rel="external">在这里</a>，官方的接入说明已经很详细了，这里就不过多说一些都知道的东西，说一些我在接入过程中遇到的小问题。  </p>
-<ol>
-<li><strong>markets.txt的位置</strong>：如果是放在Project根目录下，就是和setting.gradle平级的话，那么对应的就是<code>java -Pmarket=markets.txt</code> ,如果是在Module的目录下，就是和Module的build.gradle平级的话，那么对应的就是<code>java -Pmarket={module名}/markets.txt</code> 。  </li>
-<li><strong>打包的Gradle命令</strong>：官方介绍的是：<br><code>java ./gradlew -Pmarket=markets.txt clean apkRelease</code><br>但是我在使用的时候发现，根本不好使，我是直接使用的Studio中的Terminal，并且也是在Project目录下，之后自己尝试后发现，可以将<code>java ./gradlew</code> 改为<code>java gradle</code>,之后再次尝试编译，发现报错，说build中的AndroidManifest.xml文件不能删除，之后将clean去掉之后再运行，成功在Project的build中找到对应的渠道包。如果要更改渠道包生成的名，可以看官方说明。  </li>
-<li><strong>Tinker</strong>:在Tinker的多渠道打包中指明了，可以使用这种方式，并且这种方式比productFlavors更加适合tinker,因为并没有改变代码文件。所以不用根据每一个渠道包去生成对应的补丁包，其实每一个渠道包的代码是一样的。  </li>
-<li>不要忘记在<strong>signingConfig</strong>的<strong>release</strong>中配置<code>v2SigningEnabled false</code>，至于怎么判断是否需要写这句，百度。<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1></li>
-<li>亲测，Tinker加packer-ng-plugin是可以的，并且没有改变渠道信息。</li>
-<li>亲测，速度确实快好多。</li>
-<li>为什么，比如同样有100个渠道，之前的那种方式，会重复打100个包，编译期改变Manifest中的渠道信息，之后重新打包。现在的方式是将markets.txt中的文件写到zip文件中，相当于打一个包，复制一下，改其中一个文件，重复一百次，本质上是打一个包，而之前的是打100个包，这就是问什么会快的原因。</li>
-</ol>
+                <h1 id="设计模式第二弹，工厂方法模式"><a href="#设计模式第二弹，工厂方法模式" class="headerlink" title="设计模式第二弹，工厂方法模式"></a>设计模式第二弹，工厂方法模式</h1><p>简单工厂模式虽然简单，但是存在一个很严重的问题，那就是当系统要引入新的产品的时候，由于静态工厂的方法是通过入参来选择创建不同的产品，所以必然要修改工厂类的源代码，违反开闭原则，那么如何才能实现新增产品而不影响已有的代码？工厂方法模式应运而生。<br>在简单工厂模式中，只有一个工厂类，那么所有的对象创建细节它都必须知道，并决定何时实例化一个产品，工厂模式最大的确定就是当有新产品要加入系统时，必须修改工厂类，需要再其中加入必要的业务逻辑，违反开闭原则，此外，具体产品与工厂类之间的耦合度高，严重影响了系统的灵活性和拓展性。<br>在工厂方法模式中不再提供一个统一的工厂类来创建所有的产品对象，二是针对不用的产品提供不同的工厂，系统提供一个与产品等级结构相对应的共产等级结构。<br>工厂方法模式：定义一个用于创建对象的接口，让子类决定将哪一个类实例化。工厂方法模式让一个类的实例化延迟到其子类，工厂方法模式又简称为工厂模式。<br>思考：工厂方法模式中的工厂方法能否为静态方法？为什么？<br>答：不能，因为需要子类去各自实现，抽象方法由子类动态实现，而动态性与static所声明的静态性冲突。<br>思考：有人说：可以在客户端代码中直接使用反射机制来生成产品对象，在定义产品对象时使用抽象类型，同样可以确保系统的灵活性和可拓展性，增加新的具体产品无须修改源代码，只需要将其作为抽象产品类的子类，根本不需要抽象工厂类和具体工厂类。试思考这种做法是否可行，如果可行，这种做法是否存在问题，为什么？<br>答：工厂的作用除了将对象的创建和对象的使用分离之外，还有一个作用就是可以屏蔽一些对象初始化的工作，如果直接反射得到具体产品对象，那么反射之后，需要每次做初始化工作，而工厂中就直接初始化完成了。反射生成对象只能适用一些最简单的情况，如果对象的创建比较复杂，例如要调用有参的构造函数，创建之前需要配置相应的环境，则需要将这些代码封装到工厂中，而工厂的作用不仅仅是简单的创建一个对象。<br>练习：使用工厂方法模式设计一个程序来读取各种不同类型的图片格式，针对每一种图片格式都设计一个图片读取器，如GIF图片读取器用于读取GIF格式的图片、JPG图片读取器用于读取JPG格式的图片。需充分考虑系统的灵活性和可扩展性。  </p>
+<pre><code class="java"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ReadFactory</span> </span>{
+    <span class="function">ReadPicTool <span class="title">creatPicTool</span><span class="params">()</span></span>;
+    <span class="function">ReadPicTool <span class="title">creatPicTool</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span></span>;
+    <span class="function"><span class="keyword">void</span> <span class="title">read</span><span class="params">()</span></span>;
+}
+<span class="class"><span class="keyword">class</span> <span class="title">GIFReadFactory</span> <span class="keyword">implements</span> <span class="title">ReadFactory</span></span>{
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> ReadPicTool <span class="title">creatPicTool</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">new</span> GifPicRead();
+    }
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> ReadPicTool <span class="title">creatPicTool</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">new</span> GifPicRead();
+    }
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>{
+        GifPicRead read= (GifPicRead) creatPicTool();
+        read.read();
+    }
+}
+<span class="class"><span class="keyword">class</span> <span class="title">PngReadFactory</span> <span class="keyword">implements</span> <span class="title">ReadFactory</span></span>{
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> ReadPicTool <span class="title">creatPicTool</span><span class="params">()</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">new</span> PngPicRead();
+    }
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> ReadPicTool <span class="title">creatPicTool</span><span class="params">(<span class="keyword">byte</span>[] bytes)</span> </span>{
+        <span class="keyword">return</span> <span class="keyword">new</span> PngPicRead();
+    }
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>{
+        PngPicRead read= (PngPicRead) creatPicTool();
+        read.read();
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ReadPicTool</span> </span>{
+    <span class="function"><span class="keyword">void</span> <span class="title">read</span><span class="params">()</span></span>;
+}
+<span class="class"><span class="keyword">class</span> <span class="title">GifPicRead</span> <span class="keyword">implements</span> <span class="title">ReadPicTool</span></span>{
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"读取GIF图片"</span>);
+    }
+}
+<span class="class"><span class="keyword">class</span> <span class="title">JpgPicRead</span> <span class="keyword">implements</span> <span class="title">ReadPicTool</span></span>{
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"读取JPG图片"</span>);
+    }
+}
+<span class="class"><span class="keyword">class</span> <span class="title">PngPicRead</span> <span class="keyword">implements</span> <span class="title">ReadPicTool</span></span>{
+    <span class="meta">@Override</span>
+    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>{
+        System.out.println(<span class="string">"读取PNG图片"</span>);
+    }
+}
+<span class="comment">/**
+ * 解析器
+ */</span>
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">XMLUtil</span> </span>{
+    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getReadFactory</span><span class="params">()</span> </span>{
+        <span class="keyword">try</span> {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc;
+            doc=builder.parse(<span class="keyword">new</span> File(<span class="string">"config.xml"</span>));
+            NodeList nl=doc.getElementsByTagName(<span class="string">"factory"</span>);
+            Node classNode=nl.item(<span class="number">0</span>).getFirstChild();
+            String readFactory=classNode.getNodeValue().trim();
+            Class c=Class.forName(readFactory);
+            Object obj=c.newInstance();
+            <span class="keyword">return</span> obj;
+        } <span class="keyword">catch</span> (Exception e) {
+            e.printStackTrace();
+            <span class="keyword">return</span> <span class="keyword">null</span>;
+        }
+    }
+}
+ <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[]args)</span></span>{
+        GIFReadFactory factory=<span class="keyword">new</span> GIFReadFactory();
+        GifPicRead read = (GifPicRead) factory.creatPicTool();
+        read.read();
+        factory.read();
+        JpgReadFactory readFactory = (JpgReadFactory) XMLUtil.getReadFactory();
+        JpgPicRead readPicTool = (JpgPicRead) readFactory.creatPicTool();
+        readPicTool.read();
+        readFactory.read();
+    }
+</code></pre>
+<p>跟之前的逻辑差不多，也都是简单的应用。</p>
 
 
                 <hr>
@@ -212,13 +290,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/02/12/加解密/" data-toggle="tooltip" data-placement="top" title="安全加解密">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2016/12/27/JAVA编译时注解/" data-toggle="tooltip" data-placement="top" title="JAVA编译时注解">Next Post &rarr;</a>
+                            <a href="/2017/03/22/工厂模式/" data-toggle="tooltip" data-placement="top" title="设计模式第一弹，简单工厂模式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -245,7 +319,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#多渠道打包" title="多渠道打包">多渠道打包</a>
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
                         
                     </div>
                 </section>

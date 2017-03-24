@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          设计模式第一弹，简单工厂模式 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/22/工厂模式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/siyue.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                    <h1>设计模式第一弹，简单工厂模式</h1>
+                    <h2 class="subheading">&quot;设计模式&quot;</h2>
+                    <span class="meta">
+                        Posted by hbl on
+                        2017-03-22
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="设计模式第一弹，简单工厂模式"><a href="#设计模式第一弹，简单工厂模式" class="headerlink" title="设计模式第一弹，简单工厂模式"></a>设计模式第一弹，简单工厂模式</h1><p>最近在补一些基础知识，设计模式啊，算法啊，数据结构之类的，觉得自己还差的好多，第一个副本就是设计模式，学习的文章是<a href="http://blog.csdn.net/lovelion/article/details/17517213" title="史上最全设计模式导学目录（完整版）" target="_blank" rel="external">http://blog.csdn.net/lovelion/article/details/17517213</a>史上最全的设计模式，朋友推荐的，这一系列的内容也就是写读书心得，毕竟看过一遍没有自己再梳理一遍来的深刻。<br>先简单说一下主要内容；包含三部分，简单工厂模式，工厂方法模式和抽象工厂模式。</p>
+<h2 id="简单工厂模式"><a href="#简单工厂模式" class="headerlink" title="简单工厂模式"></a>简单工厂模式</h2><p>简介：工厂模式是最常用的一种创建型设计模式，通常所说的工厂模式都是指工厂方法模式，简单工厂模式就是工厂方法模式的小弟。不是GoF23中设计模式中的一种，属于入门级设计模式，也是最简单的工厂模式。<br>设计思想：首先将需要创建的各种不同对象的相关代码封装到不同的类中，这些类成为具体的产品类，而将他们公共的代码进行抽象和提取后封装到一个抽象产品类中，每一个具体的产品类都是抽象产品的子类，然后提供一个工厂类用于创建各种产品，在工厂类中提供一个创建产品的方法， 该方法可以根据传递的参数不同来创建不同的具体产品对象，客户端只需要调用工厂类的工厂方法并传入相应的参数就可以得到一个产品对象。<br>简单工厂模式：定义一个工厂类，他根据参数的不同返回不同类的实例，被创建的实例通常都具有共同的父类，因为在简单工厂模式中用于创建实例的方法是静态方法，因此简单工厂模式又被称为静态工厂方法模式。<br>练习实战：使用简单工厂模式设计一个可以创建不同几何形状（圆形，方形，三角形）的绘图工具，每个几何图形都具有绘制draw()和擦除erase()两个方法，要求在绘制不支持的几何图形时，提示一个UnSupportedShapeException。  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div></pre></td><td class="code"><pre><div class="line">public interface Tool &#123;</div><div class="line">    void draw();</div><div class="line">    void erace();</div><div class="line">&#125;</div><div class="line">class RoundTool implements Tool &#123;</div><div class="line">    @Override</div><div class="line">    public void draw() &#123;</div><div class="line">        System.out.println("绘制一个圆形");</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void erace() &#123;</div><div class="line">        System.out.println("擦除一个圆形");</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class SquareTool implements Tool &#123;</div><div class="line">    @Override</div><div class="line">    public void draw() &#123;</div><div class="line">        System.out.println("绘制一个方形");</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void erace() &#123;</div><div class="line">        System.out.println("擦除一个方形");</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class TriangeTool implements Tool &#123;</div><div class="line">    @Override</div><div class="line">    public void draw() &#123;</div><div class="line">        System.out.println("绘制一个三角形");</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void erace() &#123;</div><div class="line">        System.out.println("擦除一个三角形");</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public class DrawToolFactory &#123;</div><div class="line">    public static Tool getDrawTool(String type)&#123;</div><div class="line">        Tool tool=null;</div><div class="line">        if(type.equalsIgnoreCase("round"))&#123;</div><div class="line">            tool=new RoundTool();</div><div class="line">            System.out.println("初始化圆形工具！");</div><div class="line">        &#125;else if(type.equalsIgnoreCase("square"))&#123;</div><div class="line">            tool=new SquareTool();</div><div class="line">            System.out.println("初始化方形工具！");</div><div class="line">        &#125;else if(type.equalsIgnoreCase("triange"))&#123;</div><div class="line">            tool=new TriangeTool();</div><div class="line">            System.out.println("初始化三角形工具！");</div><div class="line">        &#125;else&#123;</div><div class="line">            throw new UnsupportedClassVersionError("不支持的类型");</div><div class="line">        &#125;</div><div class="line">        return tool;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * 解析器</div><div class="line"> */</div><div class="line">public class XMLUtil &#123;</div><div class="line">    public static String getDrawTool() &#123;</div><div class="line">        try &#123;</div><div class="line">            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();</div><div class="line">            DocumentBuilder builder = factory.newDocumentBuilder();</div><div class="line">            Document doc;</div><div class="line">            doc=builder.parse(new File("config.xml"));</div><div class="line">            NodeList nl=doc.getElementsByTagName("drawType");</div><div class="line">            Node classNode=nl.item(0).getFirstChild();</div><div class="line">            String drawType=classNode.getNodeValue().trim();</div><div class="line">            return drawType;</div><div class="line">        &#125; catch (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">            return null;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">/**</div><div class="line"> * xml</div><div class="line"> */</div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line">&lt;config&gt;</div><div class="line">    &lt;drawType&gt;triange&lt;/drawType&gt;</div><div class="line">&lt;/config&gt;</div><div class="line">/**</div><div class="line"> * 运行类</div><div class="line"> */</div><div class="line">public static void main(String[]args)&#123;</div><div class="line">        Tool round= DrawToolFactory.getDrawTool("round");</div><div class="line">        round.draw();</div><div class="line">        round.erace();</div><div class="line">        Tool square= DrawToolFactory.getDrawTool("square");</div><div class="line">        square.draw();</div><div class="line">        square.erace();</div><div class="line">        Tool triange=DrawToolFactory.getDrawTool(XMLUtil.getDrawTool());</div><div class="line">        triange.draw();</div><div class="line">        Tool tool=DrawToolFactory.getDrawTool("error");</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>简单的练习题写完了，都是写基础的应用，看下运行结果：<br><img src="http://i.imgur.com/dTk1IBT.png" alt=""><br>明天继续写下一篇 Fighting!!!Fighting!!!Fighting!!!</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2017/03/23/工厂方法模式/" data-toggle="tooltip" data-placement="top" title="设计模式第二弹，工厂方法模式">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/03/20/okhttp中https的使用/" data-toggle="tooltip" data-placement="top" title="OkHttp中https的使用">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
