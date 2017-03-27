@@ -13,11 +13,11 @@
 
     <title>
         
-          极速打包流程 - one_cup的博客 | one_cup&#39;s Blog
+          关于webview加载https的正确使用方式 - one_cup的博客 | one_cup&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="https://alittlecup.github.io/2016/12/28/极速打包流程/">
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/27/webview加载https/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -155,7 +155,7 @@
 <!-- Post Header -->
 <style type="text/css">
     header.intro-header{
-        background-image: url('/img/girl.jpg')
+        background-image: url('/img/siyue.jpg')
     }
 </style>
 <header class="intro-header" >
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#多渠道打包" title="多渠道打包">多渠道打包</a>
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
                         
                     </div>
-                    <h1>极速打包流程</h1>
-                    <h2 class="subheading"> &quot;你好，未来&quot;</h2>
+                    <h1>关于webview加载https的正确使用方式</h1>
+                    <h2 class="subheading">&quot;安全&quot;</h2>
                     <span class="meta">
-                        Posted by one_cup on
-                        2016-12-28
+                        Posted by hbl on
+                        2017-03-27
                     </span>
                 </div>
             </div>
@@ -191,19 +191,10 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <blockquote>
-<p>之前使用的是Gradle中定义productFlavors进行多渠道打包，其实在最开始接触的时候就知道有极速打包这个方案，只不过当时项目中有Tinker,抓紧上线就没使用，趁工作间隙研究研究发现，这根本就是两种方案，而且真的是很快，并且Tinker也不用那么麻烦。</p>
-</blockquote>
-<h1 id="packer-ng-plugin"><a href="#packer-ng-plugin" class="headerlink" title="packer-ng-plugin"></a>packer-ng-plugin</h1><p>目前所了解的最快的打包方案，并且Tinker也鼓励使用这种方式，github主页上介绍100个渠道包只用10秒，github地址<a href="https://github.com/mcxiaoke/packer-ng-plugin" target="_blank" rel="external">在这里</a>，官方的接入说明已经很详细了，这里就不过多说一些都知道的东西，说一些我在接入过程中遇到的小问题。  </p>
-<ol>
-<li><strong>markets.txt的位置</strong>：如果是放在Project根目录下，就是和setting.gradle平级的话，那么对应的就是<code>java -Pmarket=markets.txt</code> ,如果是在Module的目录下，就是和Module的build.gradle平级的话，那么对应的就是<code>java -Pmarket={module名}/markets.txt</code> 。  </li>
-<li><strong>打包的Gradle命令</strong>：官方介绍的是：<br><code>java ./gradlew -Pmarket=markets.txt clean apkRelease</code><br>但是我在使用的时候发现，根本不好使，我是直接使用的Studio中的Terminal，并且也是在Project目录下，之后自己尝试后发现，可以将<code>java ./gradlew</code> 改为<code>java gradle</code>,之后再次尝试编译，发现报错，说build中的AndroidManifest.xml文件不能删除，之后将clean去掉之后再运行，成功在Project的build中找到对应的渠道包。如果要更改渠道包生成的名，可以看官方说明。  </li>
-<li><strong>Tinker</strong>:在Tinker的多渠道打包中指明了，可以使用这种方式，并且这种方式比productFlavors更加适合tinker,因为并没有改变代码文件。所以不用根据每一个渠道包去生成对应的补丁包，其实每一个渠道包的代码是一样的。  </li>
-<li>不要忘记在<strong>signingConfig</strong>的<strong>release</strong>中配置<code>v2SigningEnabled false</code>，至于怎么判断是否需要写这句，百度。<h1 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h1></li>
-<li>亲测，Tinker加packer-ng-plugin是可以的，并且没有改变渠道信息。</li>
-<li>亲测，速度确实快好多。</li>
-<li>为什么，比如同样有100个渠道，之前的那种方式，会重复打100个包，编译期改变Manifest中的渠道信息，之后重新打包。现在的方式是将markets.txt中的文件写到zip文件中，相当于打一个包，复制一下，改其中一个文件，重复一百次，本质上是打一个包，而之前的是打100个包，这就是问什么会快的原因。</li>
-</ol>
+                <h1 id="关于webview加载https的正确使用方式"><a href="#关于webview加载https的正确使用方式" class="headerlink" title="关于webview加载https的正确使用方式"></a>关于webview加载https的正确使用方式</h1><p>头几天同事遇到webview加载https出现空白页面的情况，简单查了一下发现是因为所使用的证书没有本地授信，同样的网址复制到浏览器中会弹出一个对话框提示查看或者继续，而webview中却没有，网上的方式就是在webviewclient中重写onReceivedSslError这个方法，然后调用handler.proceed();授信就可以，不过这存在一个问题就是没有对加载的https证书进行校验，就直接通过了，容易受到攻击或者代理拦截之类的，所有加上了一层证书的校验，具体的方式看代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onReceivedSslError</span><span class="params">(WebView view, SslErrorHandler handler, SslError error)</span> </span>&#123;</div><div class="line">      SslCertificate certificate = error.getCertificate();</div><div class="line">      String cName = certificate.getIssuedBy().getCName();</div><div class="line">      String uName = certificate.getIssuedTo().getOName();</div><div class="line">      <span class="keyword">if</span>(HttpsUtils.checkSslCertificate(certificate)&amp;&amp;</div><div class="line">              cName.equals(getResources().getString(R.string.ssl_issueby_name))&amp;&amp;</div><div class="line">              uName.equals(getResources().getString(R.string.company_name)))&#123;</div><div class="line">          handler.proceed();</div><div class="line">      &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>原理就是通过SslError取到https的证书，然后分别取使用者和颁发者的名字，进行对比，同时也会对比这个证书与本地的一个证书的职位是否相同。通过方法HttpsUtils.checkSslCertificate（）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">checkSslCertificate</span><span class="params">(SslCertificate certificate)</span> </span>&#123;</div><div class="line">        Bundle bundle = SslCertificate.saveState(certificate);</div><div class="line">        <span class="keyword">byte</span>[] bytes = bundle.getByteArray(<span class="string">"x509-certificate"</span>);</div><div class="line">        <span class="keyword">if</span> (bytes != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                CertificateFactory certificateFactory = CertificateFactory.getInstance(<span class="string">"X.509"</span>);</div><div class="line">                Certificate ce = certificateFactory.generateCertificate(<span class="keyword">new</span> ByteArrayInputStream(bytes));</div><div class="line">                MessageDigest instance = MessageDigest.getInstance(<span class="string">"SHA-256"</span>);</div><div class="line">                <span class="keyword">byte</span>[] digest = instance.digest(ce.getEncoded());</div><div class="line">                <span class="keyword">byte</span>[] local = instance.digest(localCertificate.getEncoded());</div><div class="line">                <span class="keyword">return</span> Arrays.equals(local, digest);</div><div class="line">            &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>其中的localCertificate就是通过读取本地文件而获得的一个证书对象，对比两个证书的指纹是否相同。HttpsUtils这个类是使用Okhttp进行请求时，初始化sslfactory和trustmanager这两个对象的，在获取TrustManager时会读取本地文件生成一个证书，赋值就可以了：  </p>
+<p>一共有三重校验，证书指纹，颁发者和使用者，基本可以保证安全。</p>
 
 
                 <hr>
@@ -212,13 +203,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2017/02/12/加解密/" data-toggle="tooltip" data-placement="top" title="安全加解密">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2016/12/27/JAVA编译时注解/" data-toggle="tooltip" data-placement="top" title="JAVA编译时注解">Next Post &rarr;</a>
+                            <a href="/2017/03/23/工厂方法模式/" data-toggle="tooltip" data-placement="top" title="设计模式第二弹，工厂方法模式">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -245,7 +232,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#多渠道打包" title="多渠道打包">多渠道打包</a>
+                          <a class="tag" href="/tags/#工作经验" title="工作经验">工作经验</a>
                         
                     </div>
                 </section>

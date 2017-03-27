@@ -97,14 +97,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -181,6 +181,27 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2017/03/27/webview加载https/">
+        <h2 class="post-title">
+            关于webview加载https的正确使用方式
+        </h2>
+        <h3 class="post-subtitle">
+            "安全"
+        </h3>
+        <div class="post-content-preview">
+            关于webview加载https的正确使用方式头几天同事遇到webview加载https出现空白页面的情况，简单查了一下发现是因为所使用的证书没有本地授信，同样的网址复制到浏览器中会弹出一个对话框提示查看或者继续，而webview中却没有，网上的方式就是在webviewclient中重写onReceivedSslError这个方法，然后调用handler.proceed();授信就可以，不过......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by hbl on
+        2017-03-27
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -386,31 +407,6 @@ packer-ng-plugin目前所了解的最快的打包方案，并且Tinker也鼓励�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2016/12/12/多渠道打包实践/">
-        <h2 class="post-title">
-            多渠道打包实践
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            多渠道打包实践
-项目要生成渠道包，调研发现有多重实现方式。1.可以使用本身统计工具所提供的的打渠道包的方式。2.使用第三方打包方案，这里有多种选择，可以采用最快的方式。3.使用Gradle进行多渠道打包。由于项目中有使用Tinker，选择使用Gradle进行多渠道打包。
-配置以TalkingData为例：第一步：在Android的AndroidManifest.xml中添加：
-
-1234&l......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by one_cup on
-        2016-12-12
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -452,15 +448,15 @@ packer-ng-plugin目前所了解的最快的打包方案，并且Tinker也鼓励�
                             
                         
                             
-                        
-                            
-                            <a href="/tags/#工作经验" title="工作经验" rel="2">工作经验</a>
+                            <a href="/tags/#工作经验" title="工作经验" rel="3">工作经验</a>
                             
                         
                             
                         
                             
                             <a href="/tags/#设计模式" title="设计模式" rel="2">设计模式</a>
+                            
+                        
                             
                         
                     </div>
