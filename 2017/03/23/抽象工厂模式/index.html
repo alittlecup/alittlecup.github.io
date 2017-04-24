@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          设计模式第二弹，工厂方法模式 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2017/03/23/抽象工厂模式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/siyue.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                    <h1>设计模式第二弹，工厂方法模式</h1>
+                    <h2 class="subheading">&quot;设计模式&quot;</h2>
+                    <span class="meta">
+                        Posted by hbl on
+                        2017-03-23
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="设计模式第三弹，抽象工厂模式"><a href="#设计模式第三弹，抽象工厂模式" class="headerlink" title="设计模式第三弹，抽象工厂模式"></a>设计模式第三弹，抽象工厂模式</h1><p>在抽象工厂模式中，将产品分为产品族和产品等级结构，每一个具体的工厂不再是具体到每一个产品，二是具体到产品族上，产品族是指由同一个工厂生产，位于不同的产品等级结构中。产品等级结构即是产品的继承结构，如一个抽象类是电视机，其子类有海尔电视机、海信电视机、TCL电视机，则抽象电视机与具体品牌的电视机之间构成了一个产品等级结构，抽象电视机是父类，而具体品牌的电视机是其子类。<br>当一个工厂等级结构可以创建出分属于不同产品等级结构的一个产品族的所有对象时，抽象工厂模式比工厂方法模式更为简单，更为有效率。<br>抽象工厂模式：提供一个创建一系列相关或相互依赖对象的接口，而无须指定他们具体的类。在抽象工厂模式中，每一个具体的工厂都提供了多个工厂方法用于生产多种不同类型的产品，这些产品构成了一个产品族。<br>思考：抽象工厂模式是否符合开闭原则？<br>答：从增加产品等级结构先说，不符合开闭原则，增加一个产品等级结构就要在原有的工厂中，添加新的方法，从增加产品族的方面来说，符合开闭原则。<br>开闭原则的倾斜性：在抽象工厂模式中，增加新的产品族很方便，但是增加新的产品等级结构很麻烦，抽象工厂模式中的这种性质为”开闭原则的倾斜性”。<br>练习：分析产品族和产品等级结构分别指的是什么？要求具有加号的扩展性以支持新的操作系统平台，考虑到抽象工厂模式的对开闭原则的倾斜性，所以以两个游戏控制为产品族，系统为产品等级结构。    </p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div></pre></td><td class="code"><pre><div class="line">public <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractFactory</span> </span>&#123;</div><div class="line">    <span class="keyword">abstract</span> <span class="type">GameController</span> creatOperation();</div><div class="line">    <span class="keyword">abstract</span> <span class="type">GameController</span> creatInterface();</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WindowPhoneFactory</span> <span class="keyword">extends</span> <span class="title">AbstractFactory</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatOperation() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建window手机的游戏操作控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">OperationWController</span>();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatInterface() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建window手机的游戏界面控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">InterfaceWController</span>();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SymbianFactory</span> <span class="keyword">extends</span> <span class="title">AbstractFactory</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatOperation() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建Symbian手机的游戏操作控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">OperationSController</span>();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatInterface() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建Symbian手机的游戏界面控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">InterfaceSController</span>();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AndroidFactory</span> <span class="keyword">extends</span> <span class="title">AbstractFactory</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatOperation() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建Android手机的游戏操作控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">OperationAController</span>();</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="type">GameController</span> creatInterface() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"创建Android手机的游戏界面控制类"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">InterfaceAController</span>();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">GameController</span> </span>&#123;</div><div class="line">    <span class="keyword">abstract</span> void control();</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OperationWController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行window游戏操作控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceWController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行widnow游戏界面控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OperationSController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行Symbain游戏操作控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceSController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行Symbain游戏界面控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">OperationAController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行Android游戏操作控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterfaceAController</span> <span class="keyword">extends</span> <span class="title">GameController</span></span>&#123;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    void control() &#123;</div><div class="line">        <span class="type">System</span>.out.println(<span class="string">"进行Android游戏界面控制"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public static void main(<span class="type">String</span>[] arg)&#123;</div><div class="line">        <span class="type">WindowPhoneFactory</span> factory=<span class="keyword">new</span> <span class="type">WindowPhoneFactory</span>();</div><div class="line">        <span class="type">GameController</span> interfaceWController = factory.creatInterface();</div><div class="line">        <span class="type">GameController</span> operationWController = factory.creatOperation();</div><div class="line">        interfaceWController.control();</div><div class="line">        operationWController.control();</div><div class="line">		<span class="comment">//</span></div><div class="line">        <span class="type">SymbianFactory</span> sfactory=<span class="keyword">new</span> <span class="type">SymbianFactory</span>();</div><div class="line">        <span class="type">GameController</span> sinterfaceWController = factory.creatInterface();</div><div class="line">        <span class="type">GameController</span> soperationWController = factory.creatOperation();</div><div class="line">        sinterfaceWController.control();</div><div class="line">        soperationWController.control();</div><div class="line">		<span class="comment">//</span></div><div class="line">        <span class="type">AndroidFactory</span> afactory=<span class="keyword">new</span> <span class="type">AndroidFactory</span>();</div><div class="line">        <span class="type">GameController</span> ainterfaceWController = factory.creatInterface();</div><div class="line">        <span class="type">GameController</span> aoperationWController = factory.creatOperation();</div><div class="line">        ainterfaceWController.control();</div><div class="line">        aoperationWController.control();</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>也不知道自己写的对不对，脑子有点乱。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/03/23/工厂方法模式/" data-toggle="tooltip" data-placement="top" title="设计模式第二弹，工厂方法模式">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
