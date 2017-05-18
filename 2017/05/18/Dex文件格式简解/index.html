@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Dex文件格式简解 - one_cup的博客 | one_cup&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://alittlecup.github.io/2017/05/18/Dex文件格式简解/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">one_cup</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/timg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                    <h1>Dex文件格式简解</h1>
+                    <h2 class="subheading">&quot;DEX&quot;</h2>
+                    <span class="meta">
+                        Posted by hbl on
+                        2017-05-18
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="Dex文件格式简解"><a href="#Dex文件格式简解" class="headerlink" title="Dex文件格式简解"></a>Dex文件格式简解</h1><p>一个简单的Dex文件分析文章，学习自<a href="http://www.blogfshare.com/dex-format.html" title="Android安全–Dex文件格式详解" target="_blank" rel="external">http://www.blogfshare.com/dex-format.html</a>，<a href="http://www.wjdiankong.cn/android%E9%80%86%E5%90%91%E4%B9%8B%E6%97%85-%E8%A7%A3%E6%9E%90%E7%BC%96%E8%AF%91%E4%B9%8B%E5%90%8E%E7%9A%84dex%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/" title="Android逆向之旅—解析编译之后的Dex文件格式" target="_blank" rel="external">http://www.wjdiankong.cn/android%E9%80%86%E5%90%91%E4%B9%8B%E6%97%85-%E8%A7%A3%E6%9E%90%E7%BC%96%E8%AF%91%E4%B9%8B%E5%90%8E%E7%9A%84dex%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F/</a>。<br>先上图，文尾给出github地址。<br><img src="http://i.imgur.com/1polSz4.jpg" alt=""> </p>
+<p><img src="http://i.imgur.com/dny2fNY.png" alt=""></p>
+<p><img src="http://i.imgur.com/9LeHMZQ.png" alt=""></p>
+<p>从最后一张图可以看出，整个dex文件包括：  </p>
+<ol>
+<li>文件头，主要包含校验和其他结构的偏移地址和长度信息。  </li>
+<li>索引区，包含string，type，proto，field,method等信息。  </li>
+<li>数据区，包含class数据，data数据和链接数据。  </li>
+</ol>
+<h2 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h2><p><img src="http://i.imgur.com/pOPg527.png" alt="">  </p>
+<p>从中可以看到Header部分都包括哪些内容，简单介绍。</p>
+<p>(1). magic value  </p>
+<p>这 8 个 字节一般是常量 ，为了使 .dex 文件能够被识别出来 ，它必须出现在 .dex 文件的最开头的<br>位置 。数组的值可以转换为一个字符串如下 ：<br>{ 0x64 0x65 0x78 0x0a 0x30 0x33 0x35 0x00 } = “dex\n035\0”<br>中间是一个 ‘\n’ 符号 ，后面 035 是 Dex 文件格式的版本 。</p>
+<p>(2).  checksum 和 signature  </p>
+<p>文件校验码 ，使用alder32 算法校验文件除去 maigc ，checksum 外余下的所有文件区域 ，用于检查文件错误 。<br>signature , 使用 SHA-1 算法 hash 除去 magic ,checksum 和 signature 外余下的所有文件区域 ，<br>用于唯一识别本文件 。 </p>
+<p>(3).   file_size  </p>
+<p>Dex 文件的大小 。</p>
+<p>(4).   header_size  </p>
+<p>header 区域的大小 ，单位 Byte ，一般固定为 0x70 常量 。</p>
+<p>(5).   endian_tag  </p>
+<p>大小端标签 ，标准 .dex 文件格式为 小端 ，此项一般固定为 0x1234 5678 常量 。</p>
+<p>(6).   link_size和link_off  </p>
+<p>这个两个字段是表示链接数据的大小和偏移值。  </p>
+<p>(7).   map_off  </p>
+<p>map_item 的偏移地址 ，该 item 属于 data 区里的内容 ，值要大于等于 data_off 的大小 。<br>定义位置：data区。<br>引用位置：header 区 。<br>map_list 里先用一个 uint 描述后面有 size 个 map_item , 后续就是对应的 size 个 map_item 描述 。map_item 结构有 4 个元素 ： type 表示该 map_item 的类型 ，本节能用到的描述如下 ，详细Dalvik Executable Format 里 Type Code 的定义 ；size 表示再细分此 item，该类型的个数；offset 是第一个元素的针对文件初始位置的偏移量 ； unuse 是用对齐字节的 ，无实际用处 。（这个部分略）  </p>
+<p>(8).  string_ids_size和string_ids_off  </p>
+<p>这两个字段表示dex中用到的所有的字符串内容的大小和偏移值，我们需要解析完这部分，然后用一个字符串池存起来，后面有其他的数据结构会用索引值来访问字符串，这个池子也是非常重要的。  </p>
+<p>(9).  type_ids_size和type_ids_off   </p>
+<p>这两个字段表示dex中的类型数据结构的大小和偏移值，比如类类型，基本类型等信息。  </p>
+<p>(10).  proto_ids_size和type_ids_off  </p>
+<p>这两个字段表示dex中的元数据信息数据结构的大小和偏移值，描述方法的元数据信息，比如方法的返回类型，参数类型等信息，后面会详细介绍proto_ids的数据结构</p>
+<p>(11).  field_ids_size和field_ids_off</p>
+<p>这两个字段表示dex中的字段信息数据结构的大小和偏移值，后面会详细介绍field_ids的数据结构</p>
+<p>(12).  method_ids_size和method_ids_off</p>
+<p>这两个字段表示dex中的方法信息数据结构的大小和偏移值，后面会详细介绍method_ids的数据结构</p>
+<p>(13).  class_defs_size和class_defs_off</p>
+<p>这两个字段表示dex中的类信息数据结构的大小和偏移值，这个数据结构是整个dex中最复杂的数据结构，他内部层次很深，包含了很多其他的数据结构，所以解析起来也很麻烦，所以后面会着重讲解这个数据结构</p>
+<p>(14).  data_size和data_off</p>
+<p>这两个字段表示dex中数据区域的结构信息的大小和偏移值，这个结构中存放的是数据区域，比如我们定义的常量值等信息。</p>
+<p>到这里我们就看完了dex的头部信息，头部包含的信息还是很多的，主要就两个个部分：</p>
+<ol>
+<li><p>魔数+签名+文件大小等信息</p>
+</li>
+<li><p>后面的各个数据结构的大小和偏移值，都是成对出现的。</p>
+</li>
+</ol>
+<h2 id="索引区"><a href="#索引区" class="headerlink" title="索引区"></a>索引区</h2><p>(1). string_ids数据结构  </p>
+<p>string_ids 区索引了 .dex 文件所有的字符串 。 本区里的元素格式为 string_ids_item。可以使用结<br>构体如下描述 。   </p>
+<figure class="highlight plain"><figcaption><span>class StringIdsItem &#123;	</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">	/**</div><div class="line">	 * struct string_ids_item</div><div class="line">		&#123;</div><div class="line">		uint string_data_off;</div><div class="line">		&#125;</div><div class="line">	 */</div><div class="line">	public int string_data_off;	</div><div class="line">	public static int getSize()&#123;</div><div class="line">		return 4;</div><div class="line">	&#125;	</div><div class="line">	@Override</div><div class="line">	public String toString()&#123;</div><div class="line">		return Utils.bytesToHexString(Utils.int2Byte(string_data_off));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">```  </div><div class="line"></div><div class="line">因为一个item是4字节，然后ids_size=0x0e，ids_off=0x70,然后可以算一下0e=14,那就是14*4=56，从70开始56个字节。在逆向的那篇文章中有相对应的数据截图，不过我当时看的时候发现ids_item的二进制少了后面2位，当时一直没看懂后来才明白，应该是作者红色标的不对。后面也有好几处我算的和作者标注不符的。然后在根据ids_item查找data_item,将获得的string放到一个池中。</div><div class="line"></div><div class="line">这里说一下计算长度的方法，最开始我在看的时候没有理解ids_size的含义，off偏移地址我懂，然后就差在计算当前item的长度上，后来看了另一篇文章之后才明白，size的表示含有的item的个数，相对应的item对于string , proto , type , method是不一样的，首先你得知道item的结构体是有什么组成的，int 就是4，short就是2，先算一个item的长度，然后乘以size,这就是对应的数据的长度，从off出开始查找。 </div><div class="line"> </div><div class="line">(2). type_ids数据结构  </div><div class="line"></div><div class="line">这个数据结构中存放的数据主要是描述dex中所有的类型，比如类类型，基本类型等信息。type_ids 区索引了 dex 文件里的所有数据类型 ，包括 class 类型 ，数组类型（array types）和基本类型(primitive types) 。 本区域里的元素格式为 type_ids_item , 结构描述如下 ：</div></pre></td></tr></table></figure>
+<p>public class TypeIdsItem {<br>    /**</p>
+<pre><code> * struct type_ids_item
+    {
+    uint descriptor_idx;
+    }
+ */    
+public int descriptor_idx;    
+public static int getSize(){
+    return 4;
+}
+@Override
+public String toString(){
+    return Utils.bytesToHexString(Utils.int2Byte(descriptor_idx));
+}
+</code></pre><p>}<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">**type_ids_item 里面 descriptor_idx 的值的意思 ，是 string_ids 里的 <span class="keyword">index</span> 序号 ，是用来描述此<span class="keyword">type</span> 的字符串。**</div><div class="line"></div><div class="line">我们后面的其他数据结构也会使用到type_ids类型，所以我们这里解析完type_ids也是需要用一个池子来存放的，后面直接用索引<span class="keyword">index</span>来访问即可。</div><div class="line"></div><div class="line">(<span class="number">3</span>). proto_ids数据结构</div><div class="line"></div><div class="line">proto 的意思是 <span class="function"><span class="keyword">method</span> <span class="title">prototype</span> 代表 <span class="title">java</span> 语言里的一个 <span class="title">method</span> 的原型 。<span class="title">proto_ids</span> 里的元素为 <span class="title">proto_id_item</span> , 结构如下 。</span></div></pre></td></tr></table></figure></p>
+<p>public class ProtoIdsItem {<br>        /**</p>
+<pre><code> * struct proto_id_item
+    {
+    uint shorty_idx;
+    uint return_type_idx;
+    uint parameters_off;
+    }
+ */    
+public int shorty_idx;
+public int return_type_idx;
+public int parameters_off;
+//这个不是公共字段，而是为了存储方法原型中的参数类型名和参数个数
+public List&lt;String&gt; parametersList = new ArrayList&lt;String&gt;();
+public int parameterCount;
+public static int getSize(){
+    return 4 + 4 + 4;
+}
+@Override
+public String toString(){
+    return &quot;shorty_idx:&quot;+shorty_idx+&quot;,return_type_idx:&quot;+return_type_idx+&quot;,parameters_off:&quot;+parameters_off;
+}
+</code></pre><p>}<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">shorty_idx ：跟 type_ids 一样 ，它的值是一个 string_ids 的 <span class="keyword">index</span> 号 ，最终是一个简短的字符串描述 ，用来说明该 <span class="function"><span class="keyword">method</span> 原型。  </span></div><div class="line"><span class="title">return_type_idx</span> ：它的值是一个 <span class="title">type_ids</span> 的 <span class="title">index</span> 号 ，表示该 <span class="title">method</span> 原型的返回值类型 。  </div><div class="line"><span class="title">parameters_off</span> ：后缀 <span class="title">off</span> 是 <span class="title">offset</span> , 指向 <span class="title">method</span> 原型的参数列表 <span class="title">type_list</span> ; 若 <span class="function"><span class="keyword">method</span> 没有参数 ，值为0 。参数列表的格式是 <span class="title">type_list</span> ，结构从逻辑上如下描述 。<span class="title">size</span> 表示参数的个数 ；<span class="title">type_idx</span> 是对应参数的类型 ，它的值是一个 <span class="title">type_ids</span> 的 <span class="title">index</span> 号 ，跟 <span class="title">return_type_idx</span> 是同一个品种的东西 。</span></div><div class="line"></div><div class="line">注意：我们在这里会看到很多<span class="title">idx</span>结尾的字段，这个一般都是索引值，所以我们要注意的是，区分这个索引值到底是对应的哪张表格，是字符串池，还是类型池等信息，这个如果弄混淆的话，那么解析就会出现混乱了。这个后面其他数据结构都是需要注意的。</div><div class="line"></div><div class="line"><span class="params">(4)</span>. <span class="title">field_ids</span>数据结构</div><div class="line"><span class="title">filed_ids</span> 区里面存放的是<span class="title">dex</span> 文件引用的所有的 <span class="title">field</span> 。本区的元素格式是 <span class="title">field_id_item</span> ，逻辑结构描述如:</div></pre></td></tr></table></figure></p>
+<p>public class FieldIdsItem {<br>    /**</p>
+<pre><code> * struct filed_id_item
+    {
+    ushort class_idx;
+    ushort type_idx;
+    uint name_idx;
+    }
+ */    
+public short class_idx;
+public short type_idx;
+public int name_idx;    
+public static int getSize(){
+    return 2 + 2 + 4;
+}
+@Override
+public String toString(){
+    return &quot;class_idx:&quot;+class_idx+&quot;,type_idx:&quot;+type_idx+&quot;,name_idx:&quot;+name_idx;
+}    
+</code></pre><p>}<br><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class_idx ：表示本 field 所属的 <span class="keyword">class</span> 类型 , class_idx 的值是 type_ids 的一个 <span class="keyword">index</span> ， 并且必须指向一个<span class="keyword">class</span> 类型 。  </div><div class="line">type_idx ：表示本 field 的类型 ，它的值也是 type_ids 的一个 <span class="keyword">index</span> 。  </div><div class="line">name_idx ： 表示本 field 的名称 ，它的值是 string_ids 的一个 <span class="keyword">index</span> 。  </div><div class="line"></div><div class="line">注意：这里的字段都是索引值，一定要区分是哪个池子的索引值，还有就是，这个数据结构我们后面也要使用到，所以需要用一个池子来存储。</div><div class="line"></div><div class="line">(<span class="number">5</span>). method_ids数据结构</div><div class="line"></div><div class="line">method_ids 是索引区的最后一个条目 ，它索引了 dex 文件里的所有的 <span class="function"><span class="keyword">method</span>。  </span></div><div class="line"><span class="title">method_ids</span> 的元素格式是 <span class="title">method_id_item</span> ， 结构跟 <span class="title">fields_ids</span> 很相似：</div></pre></td></tr></table></figure></p>
+<p>public class MethodIdsItem {<br>    /**</p>
+<pre><code> * struct filed_id_item
+    {
+    ushort class_idx;
+    ushort proto_idx;
+    uint name_idx;
+    }
+ */    
+public short class_idx;
+public short proto_idx;
+public int name_idx;    
+public static int getSize(){
+    return 2 + 2 + 4;
+}    
+@Override
+public String toString(){
+    return &quot;class_idx:&quot;+class_idx+&quot;,proto_idx:&quot;+proto_idx+&quot;,name_idx:&quot;+name_idx;
+}
+</code></pre><p>}<br>```</p>
+<p>class_idx ：表示本 method 所属的 class 类型 , class_idx 的值是 type_ids 的一个 index ， 并且必须指向一个 class 类型 。<br>name_idx ：表示本 method 的名称 ，它的值是 string_ids 的一个 index 。<br>proto_idx ：描述该 method 的原型 ，指向 proto_ids 的一个 index 。  </p>
+<p>(6). class_defs数据结构 (这个太难了，略)</p>
+<h1 id="结束"><a href="#结束" class="headerlink" title="结束"></a>结束</h1><p>后面都太难了，我也是心有余而力不足。就到此为止了。这篇文章主要的就是简单的header加索引区的分析，主要的还是得看上面的参考文章。</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/04/26/原型模式/" data-toggle="tooltip" data-placement="top" title="设计模式第五弹，原型模式">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; one_cup 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://alittlecup.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="https://alittlecup.github.io/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
